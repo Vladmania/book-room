@@ -98,7 +98,9 @@ class ProductControler {
     }
     async getProduct(req, res){
        const prod = await Product.findAll()
-       res.json(prod)
+       const {count, page}= req.query
+       const dprod = prod.slice(page * count, Number(count)*( Number(page) + 1))
+       res.json({items: dprod.length === 0 ? prod : dprod, totalProductCount: prod.length})
     }
     async deleteProduct(req, res){
         const id = req.params.id

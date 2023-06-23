@@ -5,10 +5,9 @@ import { Footer } from './сomponents/footer/Footer'
 import { Cart } from './сomponents/cart/Cart'
 import { UserProfile} from './сomponents/profile/UserProfile'
 import { PagesProducts } from './сomponents/product page/PagesProducts'
-import { useAppDispatch, useAppSelector } from './store/Store'
+import { useAppDispatch} from './store/Store'
 import { useEffect } from "react";
 import { thankPostCheck } from "./store/Slice/ProfilSlice"
-import { thankGetProductCart } from "./store/Slice/CartSlice"
 
 function App() {
   const dispatch = useAppDispatch()

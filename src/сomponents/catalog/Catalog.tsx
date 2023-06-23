@@ -9,10 +9,12 @@ export const Catalog = () => {
   const product = useAppSelector((state) => state.product.product)
   const loading = useAppSelector((state) => state.product.loading)
   const error = useAppSelector((state) => state.product.error)
+  const currentPage = useAppSelector((state) => state.product.currentPage)
+  const pageSize = useAppSelector((state) => state.product.pageSize)
   const dispatch = useAppDispatch()
 
   useEffect(() => {
-    dispatch(thankGetProduct())
+    dispatch(thankGetProduct({pageSize, currentPage}))
   }, [dispatch])
 
  
@@ -26,6 +28,7 @@ export const Catalog = () => {
       ) : (
         homePageCatalog
       )}
+      
     </CatalogStyle>
   )
 }

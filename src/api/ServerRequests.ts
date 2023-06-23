@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 
-export const getProduct = () => {
-  return axios.get('http://localhost:5000/api/product')
+export const getProduct = (currentPage: number, pageSize: number) => {
+  return axios.get(`http://localhost:5000/api/product?count=${pageSize}&page=${currentPage}`)
 }
 
 export const postRegistrtion = (email: string, password: string) => {

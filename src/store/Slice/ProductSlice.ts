@@ -20,12 +20,21 @@ export interface IInitialState {
   product: ProductCard[];
   loading: boolean;
   error: boolean;
+  totalProductCount: number,
+  currentPage: number;
+  pageSize: number;
 }
-
+interface IProps{
+  currentPage: number;
+  pageSize: number;
+}
 const initialState: IInitialState = {
   product: [],
   loading: false,
   error: false,
+  totalProductCount: 0,
+  currentPage: 0,
+  pageSize: 12,
 }
 
 export const productSlice = createSlice({
@@ -36,12 +45,16 @@ export const productSlice = createSlice({
       ...state,
       product: [...action.payload],
     }),
+    setTotalProductCount: (state, action)=> ({
+      ...state,
+      totalProductCount: action.payload,
+    }),
   },
   extraReducers: (bulder) => {
     bulder.addCase(thankGetProduct.pending, (state) => {
       state.loading = true
     })
-    bulder.addCase(thankGetProduct.fulfilled, (state, actions) => {
+    bulder.addCase(thankGetProduct.fulfilled, (state, actions) => {      
       state.product = actions.payload
       state.loading = false
     })
@@ -52,12 +65,13 @@ export const productSlice = createSlice({
   },
 })
 
-export const { addProduct } = productSlice.actions
+export const { addProduct, setTotalProductCount } = productSlice.actions
 
-export const thankGetProduct = createAsyncThunk<ProductCard[]>(
+export const thankGetProduct = createAsyncThunk<ProductCard[], IProps>(
   'product/thankGetProduct',
-  async () => {
-    const respons = await getProduct()
-    return respons.data
+  async ({currentPage, pageSize},{dispatch}) => {
+    const respons = await getProduct(currentPage, pageSize)
+    dispatch(setTotalProductCount(respons.data.totalProductCount))
+    return respons.data.items
   }
 )
