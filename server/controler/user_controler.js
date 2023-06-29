@@ -61,10 +61,9 @@ class UserController {
         photo: '',
         token: ''
       })
-      const userprofil = await User.findOne({
+      const userprofil = await User.findAll({
         where: { email: email, password: passwordHash},
       })
-      console.log(userprofil);
       if(userprofil){
         const token = generetToken(
           userprofil.id,
@@ -73,7 +72,7 @@ class UserController {
         userprofil.token = token
         await userprofil.save()
         
-        res.json([userprofil])
+        res.json(userprofil)
       }
       
     }
@@ -101,9 +100,9 @@ class UserController {
   async checkUser(req, res){
     const { token } = req.body
     const decoded = jwt.verify(token, secret);
-    const userprofil = await User.findOne({ where: { id: decoded.userId } })
+    const userprofil = await User.findAll({ where: { id: decoded.userId } })
     if(decoded){
-      res.json([userprofil])
+      res.json(userprofil)
     }else{res.json([])}
   }
   async getUsers(req, res) {
@@ -114,6 +113,20 @@ class UserController {
     const userprofil = await User.findAll()
       res.json(userprofil)
   }
+  async editorDataUserPhoto(req, res){
+    if(req.file){
+        const {id} = req.body
+        const photo = req.file.path
+        const userProfil = await User.findOne({
+          where: {
+            id
+          } 
+      })
+      userProfil.photo = photo
+      await userProfil.save()
+        res.json(userProfil)
+    }
+}
 }
 
 module.exports = new UserController()

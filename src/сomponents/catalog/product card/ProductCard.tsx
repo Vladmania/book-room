@@ -2,7 +2,7 @@ import { ProductCardStyle } from './ProductCardStyle'
 import star from '../../../pablic/Starno.svg'
 import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../store/Store'
-import { thankGetCart } from '../../../store/Slice/CartSlice'
+import { thankaddInCart } from '../../../store/Slice/CartSlice'
 
 interface ProductCard {
   id: number;
@@ -21,18 +21,6 @@ export const ProductCard = (props: IProps) => {
   const user = useAppSelector((state) => state.profil.profil)
   const dispatch = useAppDispatch()
 
-  const params = {
-    userId: user[0].id,
-    productId: props.value.id,
-    name: props.value.name,
-    autor: props.value.autor,
-    cover: props.value.cover,
-    price:
-      Number(props.value.hardcover_price) === 0
-        ? props.value.paperback_price
-        : props.value.hardcover_price,
-    quantity: 1,
-  }
   return (
     <ProductCardStyle key={props.value.id}>
       <div className="product_card_cover">
@@ -52,7 +40,18 @@ export const ProductCard = (props: IProps) => {
       </div>
       <div
         className="product_card_price"
-        onClick={() => dispatch(thankGetCart(params))}
+        onClick={() => dispatch(thankaddInCart({
+          userId: user[0].id,
+          productId: props.value.id,
+          name: props.value.name,
+          autor: props.value.autor,
+          cover: props.value.cover,
+          price:
+            Number(props.value.hardcover_price) === 0
+              ? props.value.paperback_price
+              : props.value.hardcover_price,
+          quantity: 1,
+        }))}
       >
         $
         {Number(props.value.hardcover_price) === 0

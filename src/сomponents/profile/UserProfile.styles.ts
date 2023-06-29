@@ -73,8 +73,8 @@ export const UserProfileStyle = styled.div`
                 position: relative;
                 border-radius: 50%;
                 cursor: pointer;
-                bottom: 58px;
-                left: 239px;
+                bottom: 63px;
+                left: 236px;
                 
         }
         .photo_upload{

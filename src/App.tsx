@@ -5,19 +5,26 @@ import { Footer } from './сomponents/footer/Footer'
 import { Cart } from './сomponents/cart/Cart'
 import { UserProfile} from './сomponents/profile/UserProfile'
 import { PagesProducts } from './сomponents/product page/PagesProducts'
-import { useAppDispatch} from './store/Store'
+import { thankGetProductCart } from "./store/Slice/CartSlice"
+import { useAppDispatch, useAppSelector} from './store/Store'
 import { useEffect } from "react";
 import { thankPostCheck } from "./store/Slice/ProfilSlice"
 
 function App() {
-  const dispatch = useAppDispatch()
-  useEffect(()=>{
+  const isAuts = useAppSelector((state) => state.profil.isAuts)
+  const cart = useAppSelector((state) => state.cart.product)
+  const user = useAppSelector((state) => state.profil.profil)
+const dispatch = useAppDispatch()
+ useEffect( ()=>{
     const toket = localStorage.getItem("token")
     if(toket){
       dispatch(thankPostCheck(toket))
+      dispatch(thankGetProductCart(toket))
     }
   },[dispatch])
-
+// if(isAuts && cart.length === 0){
+//   dispatch(thankGetProductCart(user[0].id))
+// }
 
   return (
     <BrowserRouter>

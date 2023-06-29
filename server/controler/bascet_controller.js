@@ -1,8 +1,9 @@
 const ConnectSequelize = require('../middleware/databaseСonnection')
 const { DataTypes } = require('sequelize')
+const jwt = require('jsonwebtoken')
+const { secret } = require('./config')
 
 const ProductInCart = ConnectSequelize.define('ProductfromCarts', {
-
   userId: {
     type: DataTypes.INTEGER,
     allowNull: false,
@@ -53,10 +54,11 @@ class CartController {
     res.json(cartUser)
   }
   async getCart(req, res){
-    const {userId} = req.body
+    const { token } = req.body
+    const decoded = jwt.verify(token, secret);
     const ProductsInCart = await ProductInCart.findAll({
       where: {
-         userId
+        userId: decoded.userId
       }
   })
   res.json(ProductsInCart)
@@ -70,6 +72,17 @@ class CartController {
   })
   
   res.json(remoteProduct)
+  }
+  async changeTheQuantityInTheCart(req, res){
+    const {id, quantity} = req.body
+    const changeProduct = await ProductInCart.findOne({
+      where: {
+        id
+      } 
+  })
+  changeProduct.quantity = quantity
+  await changeProduct.save()
+  res.json(changeProduct)
   }
 }
 

@@ -110,7 +110,7 @@ export const thankPostLogin = createAsyncThunk<IUserProfil[], IProps>(
   }
 )
 
-export const thankPostCheck = createAsyncThunk<IUserProfil[], string| null>(
+export const thankPostCheck = createAsyncThunk<IUserProfil[], string | null>(
   'profil/thankPostCheck',
   async (data) => {
     const  token  = data

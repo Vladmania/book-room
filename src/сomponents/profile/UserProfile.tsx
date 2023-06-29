@@ -4,24 +4,18 @@ import imgemail from "../../pablic/Mail.svg"
 import imgpassword from "../../pablic/Hide.svg"
 import imgCamera from "../../pablic/Camera.svg"
 import { useAppSelector } from '../../store/Store'
+import noUserPhoto from '../../pablic/User photo.png'
 
-// interface IUserProfile{
-//     email:string;
-//     name: string;
-//     photo: string;
-//     password: string
-// }
 
 export const UserProfile = () =>{  
     const profils = useAppSelector((state) => state.profil.profil) 
-    console.log(profils);
+
     
-    
-    
+
     return(
         <UserProfileStyle>
                 <div className="UserProfile_photo">
-                    <img src="https://kartinkin.net/uploads/posts/2021-07/1626803927_34-kartinkin-com-p-muzhskoe-litso-art-art-krasivo-35.jpg" 
+                    <img src={profils[0].photo ? noUserPhoto : noUserPhoto} 
                         alt="" 
                         className="UserProfile_photo_img"/>
                         <div className="UserProfile_photo_upload">
