@@ -4,6 +4,7 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import { profilSlice } from './Slice/ProfilSlice'
 import { CartSlice } from './Slice/CartSlice'
 import {sortingSlice} from './Slice/SortingSlice'
+import {reviewsSlice} from './Slice/ReviewsSlice'
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     profil: profilSlice.reducer,
     cart: CartSlice.reducer,
     sorting: sortingSlice.reducer,
+    review: reviewsSlice.reducer,
   },
 })
 

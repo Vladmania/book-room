@@ -98,22 +98,18 @@ class UserController {
     }
   }
   async checkUser(req, res){
-    const { token } = req.body
-    const decoded = jwt.verify(token, secret);
-    const userprofil = await User.findAll({ where: { id: decoded.userId } })
-    if(decoded){
-      res.json(userprofil)
-    }else{res.json([])}
+    const token = req.headers.authorization.split(" ")[1]
+    try {
+      const decoded = jwt.verify(token, secret);
+      if(decoded){
+        const userprofil = await User.findAll({ where: { id: decoded.userId } })
+        res.json(userprofil)
+      }else{}
+    } catch(err) {
+      console.log(err);
+    }
   }
-  async getUsers(req, res) {
-    const prod = await User.findAll()
-    res.json(prod)
-  }
-  async getZapr(req, res) {
-    const userprofil = await User.findAll()
-      res.json(userprofil)
-  }
-  async editorDataUserPhoto(req, res){
+  async editorPhotoUser(req, res){
     if(req.file){
         const {id} = req.body
         const photo = req.file.path
@@ -124,8 +120,38 @@ class UserController {
       })
       userProfil.photo = photo
       await userProfil.save()
-        res.json(userProfil)
+        res.json([userProfil])
     }
+}
+async editorDataUser(req, res){
+      const {token, name, email} = req.body
+      const decoded = jwt.verify(token, secret);
+      const userProfil = await User.findOne({
+        where: {
+          id: decoded.userId
+        } 
+    })
+    userProfil.name = name
+    userProfil.email = email
+    await userProfil.save()
+      res.json([userProfil])
+  }
+  async editorPasswordUser(req, res){
+    const {token, oldPassword, newPassword} = req.body
+    const decoded = jwt.verify(token, secret);
+    const userProfil = await User.findOne({
+      where: {
+        id: decoded.userId
+      } 
+  })
+  const validPassword = bcrypt.compareSync(oldPassword, userProfil.password)
+  if(validPassword){
+    const passwordHash = bcrypt.hashSync(newPassword, 3)
+    userProfil.password = passwordHash
+    await userProfil.save()
+    res.json([userProfil])
+  }
+    res.json([userProfil])
 }
 }
 

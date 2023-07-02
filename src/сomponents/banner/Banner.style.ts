@@ -60,7 +60,7 @@ export const BannerAuthorizeNowStyle = styled.div`
     justify-content: space-around;
     font-family: 'Poppins';
     font-style: normal;
-    margin: 40px 5% 150px;
+    margin: 152px 5% 150px;
     animation: show 1s 1; 
         animation-fill-mode: forwards; 
 @keyframes show{

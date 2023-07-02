@@ -18,8 +18,7 @@ export const postLogin = (email: string, password: string) => {
 
 export const getCheck = (token: string | null) => {
   return axios.post(
-    'http://localhost:5000/api/check',
-    { token },
+    'http://localhost:5000/api/check',{token},
     {
       headers: {
         "Authorization": `Bearer: ${token}`,
@@ -56,10 +55,24 @@ export const sortProduct = (sort: string, currentPage: number) => {
   return axios.post(`http://localhost:5000/api/sortproduct?count=12&page=${currentPage}`, {sort})
 }
 //Редактирование аватарки
-export const putEditorAvatar = (data: string)=>{
-     return axios.put(`http://localhost:5000/api/editoruserphoto`, {data}, {
+export const putEditorAvatar = (data: any)=>{
+     return axios.put(`http://localhost:5000/api/editoruserphoto`, data, {
          headers: {
              'Content-Type': 'multipart/form-data'
          }
      })
+}
+
+export const addReviews = (prductId: number, name: string, avatar: string, feedback: string, rating: number) => {
+  return axios.post(`http://localhost:5000/api/addreviews`, {prductId, name, avatar, feedback, rating})
+}
+
+export const getReviews = (idProduct: number) => {
+  return axios.get(`http://localhost:5000/api/getreviews/${idProduct}`)
+}
+
+export const changeRating = ( id: number, rating: number) => {
+  console.log(id, rating);
+  
+  return axios.post(`http://localhost:5000/api/changerating`, {id, rating})
 }

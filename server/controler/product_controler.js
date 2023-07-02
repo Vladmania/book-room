@@ -142,7 +142,6 @@ class ProductControler {
   }
   async sortPrice(req, res) {
     const { minPrice, maxPrice } = req.body
-    console.log(minPrice, maxPrice)
     const Products = await Product.findAll()
     const sortProductPriceHardcover = Products.filter(
       (prod) =>
@@ -171,7 +170,6 @@ class ProductControler {
         if (a.name < b.name) {
           return -1
         }
-        // a должно быть равным b
         return 0
       })
       const paginalСonclusion = sortProductPriceHardcover.slice(
@@ -180,41 +178,55 @@ class ProductControler {
       )
       res.json(paginalСonclusion.length === 0 ? Products : paginalСonclusion)
     } else if (sort === 'Author name') {
-        const sortProductPriceHardcover = Products.sort(function (a, b) {
-            if (a.autor > b.autor) {
-              return 1
-            }
-            if (a.autor < b.autor) {
-              return -1
-            }
-            // a должно быть равным b
-            return 0
-          })
-          const paginalСonclusion = sortProductPriceHardcover.slice(
-            page * count,
-            Number(count) * (Number(page) + 1)
-          )
-          res.json(paginalСonclusion.length === 0 ? Products : paginalСonclusion)
+      const sortProductPriceHardcover = Products.sort(function (a, b) {
+        if (a.autor > b.autor) {
+          return 1
+        }
+        if (a.autor < b.autor) {
+          return -1
+        }
+        return 0
+      })
+      const paginalСonclusion = sortProductPriceHardcover.slice(
+        page * count,
+        Number(count) * (Number(page) + 1)
+      )
+      res.json(paginalСonclusion.length === 0 ? Products : paginalСonclusion)
     } else if (sort === 'Rating') {
-        const sortProductPriceHardcover = Products.sort(
-            (a, b) => a.rating - b.rating
-          )
-          const paginalСonclusion = sortProductPriceHardcover.slice(
-            page * count,
-            Number(count) * (Number(page) + 1)
-          )
-          res.json(paginalСonclusion.length === 0 ? Products : paginalСonclusion)
+      const sortProductPriceHardcover = Products.sort(function (a, b) {
+        if (a.rating < b.rating) {
+          return 1
+        }
+        if (a.rating > b.rating) {
+          return -1
+        }
+        return 0
+      }
+      )
+      const paginalСonclusion = sortProductPriceHardcover.slice(
+        page * count,
+        Number(count) * (Number(page) + 1)
+      )
+      res.json(paginalСonclusion.length === 0 ? Products : paginalСonclusion)
     } else if (sort === 'Date of issue') {
-        const sortProductPriceHardcover = Products.sort(
-            (a, b) => a.createdAt - b.createdAt
-          )
-          const paginalСonclusion = sortProductPriceHardcover.slice(
-            page * count,
-            Number(count) * (Number(page) + 1)
-          )
-          res.json(paginalСonclusion.length === 0 ? Products : paginalСonclusion)
+      const sortProductPriceHardcover = Products.sort(
+        (a, b) => a.createdAt - b.createdAt
+      )
+      const paginalСonclusion = sortProductPriceHardcover.slice(
+        page * count,
+        Number(count) * (Number(page) + 1)
+      )
+      res.json(paginalСonclusion.length === 0 ? Products : paginalСonclusion)
     }
-    
+  }
+  async changeRating(req, res) {
+    const { id, rating } = req.body
+    const changeProduct = await Product.findOne({
+      where: { id }
+    })
+    changeProduct.rating = rating
+    await changeProduct.save()
+    res.json(changeProduct)
   }
 }
 

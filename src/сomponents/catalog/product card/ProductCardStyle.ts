@@ -44,4 +44,19 @@ export const ProductCardStyle = styled.div`
     padding: 10px 50px;
     margin: 15px 0 0 0;
   }
+  .product_page_favorites {
+    display: flex;
+    align-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #34496687;
+    position: absolute;
+    margin: 20px;
+  }
+  .product_page_favorites img {
+    margin: auto;
+    width: 30px;
+    padding: 2px 0 0 0;
+  }
 `

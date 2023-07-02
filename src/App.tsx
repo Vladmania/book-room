@@ -11,9 +11,6 @@ import { useEffect } from "react";
 import { thankPostCheck } from "./store/Slice/ProfilSlice"
 
 function App() {
-  const isAuts = useAppSelector((state) => state.profil.isAuts)
-  const cart = useAppSelector((state) => state.cart.product)
-  const user = useAppSelector((state) => state.profil.profil)
 const dispatch = useAppDispatch()
  useEffect( ()=>{
     const toket = localStorage.getItem("token")
@@ -22,9 +19,6 @@ const dispatch = useAppDispatch()
       dispatch(thankGetProductCart(toket))
     }
   },[dispatch])
-// if(isAuts && cart.length === 0){
-//   dispatch(thankGetProductCart(user[0].id))
-// }
 
   return (
     <BrowserRouter>

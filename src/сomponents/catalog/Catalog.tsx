@@ -7,6 +7,7 @@ import { useEffect } from 'react'
 import forward from '../../pablic/Forward.svg'
 import back from '../../pablic/Back.svg'
 
+
 export const Catalog = () => {
   const product = useAppSelector((state) => state.product.product)
   const loading = useAppSelector((state) => state.product.loading)
@@ -30,18 +31,7 @@ export const Catalog = () => {
   const sortProduct = sort.map((e) => <ProductCard value={e} />)
   return (
     <>
-      <CatalogStyle>
-        {loading ? (
-          <h2>Loading...</h2>
-        ) : error ? (
-          <h1>Явно где-то косяк</h1>
-        ) : sort.length !== 0 ? (
-          sortProduct
-        ) : (
-          homePageCatalog
-        )}
-      </CatalogStyle>
-      <CatalogFlipStyle>
+    <CatalogFlipStyle>
         {currentPage !== 0 ? (
           <img
             src={back}
@@ -69,6 +59,18 @@ export const Catalog = () => {
           />
         )}
       </CatalogFlipStyle>
+      <CatalogStyle>
+        {loading ? (
+          <h2>Loading...</h2>
+        ) : error ? (
+          <h1>Явно где-то косяк</h1>
+        ) : sort.length !== 0 ? (
+          sortProduct
+        ) : (
+          homePageCatalog
+        )}
+      </CatalogStyle>
+      
     </>
   )
 }

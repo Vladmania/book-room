@@ -1,6 +1,6 @@
 import { createSlice} from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { postRegistrtion, postLogin, getCheck } from '../../api/ServerRequests'
+import { postRegistrtion, postLogin, getCheck, putEditorAvatar } from '../../api/ServerRequests'
 
 interface IUserProfil {
   id: number;
@@ -85,6 +85,18 @@ export const profilSlice = createSlice({
       state.error = true
       state.loading = false
     })
+    builder.addCase(thankPutPhoto.pending, (state) => {
+      state.loading = true
+    })
+    builder.addCase(thankPutPhoto.fulfilled, (state, actions) => {
+      state.profil = actions.payload
+      state.loading = false
+      state.modal = false
+    })
+    builder.addCase(thankPutPhoto.rejected, (state) => {
+      state.error = true
+      state.loading = false
+    })
   },
 })
 
@@ -118,3 +130,12 @@ export const thankPostCheck = createAsyncThunk<IUserProfil[], string | null>(
     return response.data
   }
 )
+
+export const thankPutPhoto = createAsyncThunk<IUserProfil[], any>(
+  'profil/thankPutPhoto',
+  async (data) => {
+    const response = await putEditorAvatar(data)
+    return response.data
+  }
+)
+

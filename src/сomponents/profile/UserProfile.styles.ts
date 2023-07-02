@@ -108,6 +108,7 @@ export const UserProfileStyle = styled.div`
                 border-radius: 16px;
                 background: #F0F4EF;
                 margin: 0 0 20px 0;
+                height: 66px;
         }
         .userProfile_information_input input{
                 background: #F0F4EF;
@@ -130,5 +131,17 @@ export const UserProfileStyle = styled.div`
         .userProfile_profile_info{
                 margin: 0 0 0 4%;
                 width: 68%;
+        }
+        .userProfile_profile_button{
+                display: inline-flex;
+                padding: 10px 50px;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+                color: #F0F4EF;
+                border-radius: 16px;
+                background-color: #344966;
+                margin: 50px 0 0 0;
         }
 `

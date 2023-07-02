@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getProduct, sortProduct } from '../../api/ServerRequests'
+import { getProduct, sortProduct, changeRating } from '../../api/ServerRequests'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { sortProductPrice } from '../../api/ServerRequests'
 
@@ -128,4 +128,14 @@ export const thankSortProduct = createAsyncThunk<ProductCard[], {sort: string, c
     return respons.data
   }
 )
+
+export const thankchangeRating = createAsyncThunk<ProductCard[], {id: number, rating: number} >(
+  'product/thankchangeRating',
+  async ({id, rating}) => {
+    const respons = await changeRating(id, rating)
+    return respons.data
+  }
+)
+
+
 
