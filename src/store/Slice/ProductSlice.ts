@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getProduct, sortProduct, changeRating } from '../../api/ServerRequests'
+import { getProduct, sortProduct, changeRating, getOneProduct, searchQuery } from '../../api/ServerRequests'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { sortProductPrice } from '../../api/ServerRequests'
 
@@ -24,6 +24,7 @@ interface ISortPrice{
 }
 export interface IInitialState {
   product: ProductCard[];
+  productPage: ProductCard[],
   loading: boolean;
   error: boolean;
   totalProductCount: number,
@@ -34,6 +35,7 @@ export interface IInitialState {
 
 export const initialState: IInitialState = {
   product: [],
+  productPage: [],
   loading: false,
   error: false,
   totalProductCount: 0,
@@ -97,6 +99,14 @@ export const productSlice = createSlice({
       state.error = true
       state.loading = false
     })
+    builder.addCase(thankgetOneProduct.fulfilled, (state, actions) => {  
+      state.productPage = actions.payload
+      state.loading = false
+    })
+    // builder.addCase(thanksearchQuery.fulfilled, (state, actions) => {  
+    //   state.product = actions.payload
+    //   state.loading = false
+    // })
   },
 })
 
@@ -137,5 +147,19 @@ export const thankchangeRating = createAsyncThunk<ProductCard[], {id: number, ra
   }
 )
 
+export const thankgetOneProduct = createAsyncThunk<ProductCard[], number >(
+  'product/thankgetOneProduct',
+  async (id) => {
+    const respons = await getOneProduct(id)
+    return respons.data
+  }
+)
+export const thanksearchQuery = createAsyncThunk<ProductCard[], string >(
+  'product/thanksearchQuery',
+  async (query) => {
+    const respons = await searchQuery(query)
+    return respons.data
+  }
+)
 
 

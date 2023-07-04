@@ -1,6 +1,13 @@
-import { createSlice} from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { postRegistrtion, postLogin, getCheck, putEditorAvatar } from '../../api/ServerRequests'
+import {
+  postRegistrtion,
+  postLogin,
+  getCheck,
+  putEditorAvatar,
+  editorDataUser,
+  editorPasswordUser,
+} from '../../api/ServerRequests'
 
 interface IUserProfil {
   id: number;
@@ -8,7 +15,7 @@ interface IUserProfil {
   password: string;
   name: string;
   photo: string;
-  token: string
+  token: string;
 }
 
 interface IInitialState {
@@ -17,7 +24,7 @@ interface IInitialState {
   loading: boolean;
   error: boolean;
   modal: boolean;
-  message: string
+  message: string;
 }
 
 interface IProps {
@@ -31,7 +38,7 @@ const initialState: IInitialState = {
   loading: false,
   error: false,
   modal: false,
-  message: ""
+  message: '',
 }
 
 export const profilSlice = createSlice({
@@ -42,9 +49,9 @@ export const profilSlice = createSlice({
       ...state,
       product: [...action.payload],
     }),
-    openModal: (state, action)=>{
-        state.modal = action.payload
-    }
+    openModal: (state, action) => {
+      state.modal = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(thankPostCheck.pending, (state) => {
@@ -68,7 +75,7 @@ export const profilSlice = createSlice({
       state.modal = false
     })
     builder.addCase(thankPostLogin.rejected, (state) => {
-      state.message = "неверный логин или пароль"
+      state.message = 'неверный логин или пароль'
       state.error = true
       state.loading = false
     })
@@ -97,17 +104,39 @@ export const profilSlice = createSlice({
       state.error = true
       state.loading = false
     })
+    builder.addCase(thankEditorDataUser.pending, (state) => {
+      state.loading = true
+    })
+    builder.addCase(thankEditorDataUser.fulfilled, (state, actions) => {
+      state.profil = actions.payload
+      state.loading = false
+    })
+    builder.addCase(thankEditorDataUser.rejected, (state) => {
+      state.error = true
+      state.loading = false
+    })
+    builder.addCase(thankEditorPasswordUser.pending, (state) => {
+      state.loading = true
+    })
+    builder.addCase(thankEditorPasswordUser.fulfilled, (state, actions) => {
+      state.profil = actions.payload
+      state.loading = false
+    })
+    builder.addCase(thankEditorPasswordUser.rejected, (state) => {
+      state.error = true
+      state.loading = false
+    })
   },
 })
 
- export const { openModal } = profilSlice.actions
+export const { openModal } = profilSlice.actions
 
 export const thankPostRegistrtion = createAsyncThunk<IUserProfil[], IProps>(
   'profil/thankPostRegistrtion',
   async (data) => {
     const { email, password } = data
     const response = await postRegistrtion(email, password)
-    localStorage.setItem("token", response.data[0].token)
+    localStorage.setItem('token', response.data[0].token)
     return response.data
   }
 )
@@ -117,7 +146,7 @@ export const thankPostLogin = createAsyncThunk<IUserProfil[], IProps>(
   async (data) => {
     const { email, password } = data
     const response = await postLogin(email, password)
-    localStorage.setItem("token", response.data[0].token)
+    localStorage.setItem('token', response.data[0].token)
     return response.data
   }
 )
@@ -125,13 +154,13 @@ export const thankPostLogin = createAsyncThunk<IUserProfil[], IProps>(
 export const thankPostCheck = createAsyncThunk<IUserProfil[], string | null>(
   'profil/thankPostCheck',
   async (data) => {
-    const  token  = data
+    const token = data
     const response = await getCheck(token)
     return response.data
   }
 )
 
-export const thankPutPhoto = createAsyncThunk<IUserProfil[], any>(
+export const thankPutPhoto = createAsyncThunk<IUserProfil[], FormData>(
   'profil/thankPutPhoto',
   async (data) => {
     const response = await putEditorAvatar(data)
@@ -139,3 +168,21 @@ export const thankPutPhoto = createAsyncThunk<IUserProfil[], any>(
   }
 )
 
+export const thankEditorDataUser = createAsyncThunk<
+  IUserProfil[],
+  { token: string, name: string, email: string }
+>('profil/thankEditorDataUser', async (data) => {
+  const response = await editorDataUser(data.token, data.name, data.email)
+  return response.data
+})
+export const thankEditorPasswordUser = createAsyncThunk<
+  IUserProfil[],
+  { token: string, oldPassword: string, newPassword: string }
+>('profil/thankEditorPasswordUser', async (data) => {
+  const response = await editorPasswordUser(
+    data.token,
+    data.oldPassword,
+    data.newPassword
+  )
+  return response.data
+})

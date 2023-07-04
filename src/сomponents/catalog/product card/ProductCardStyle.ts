@@ -59,4 +59,15 @@ export const ProductCardStyle = styled.div`
     width: 30px;
     padding: 2px 0 0 0;
   }
+  .if_product_cart{
+    cursor: pointer;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    padding: 10px 50px;
+    margin: 15px 0 0 0;
+border-radius: 16px;
+border: 1px solid var(--dark, #0D1821);
+
+  }
 `

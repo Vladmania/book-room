@@ -101,7 +101,7 @@ class ProductControler {
       updatedAt: new Date(),
     })
   }
-  async getProduct(req, res) {
+  async getProducts(req, res) {
     const prod = await Product.findAll()
     const { count, page } = req.query
     const allPrice = prod.map(
@@ -114,6 +114,17 @@ class ProductControler {
       totalProductCount: prod.length,
       maxPrice,
     })
+  }
+  async getOneProduct(req, res) {
+    const {id} = req.query
+    console.log(req.query);
+    const oneProduct = await Product.findOne({
+      where: {
+        id,
+      },
+    })
+
+    res.json([oneProduct])
   }
   async deleteProduct(req, res) {
     const id = req.params.id
@@ -228,6 +239,16 @@ class ProductControler {
     await changeProduct.save()
     res.json(changeProduct)
   }
+  async searchQuery(req, res) {
+    const { query } = req.body
+    let q = query.toLowerCase()
+    console.log(q);
+    const changeProduct = await Product.findAll()
+    const respons = changeProduct.filter(item => item.name.split('').includes(query))
+    console.log(respons);
+    // res.json(respons)
+  }
 }
+
 
 module.exports = new ProductControler()

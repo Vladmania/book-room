@@ -3,7 +3,10 @@ import { useState } from 'react'
 import { GenrePanel } from './GenrePanel'
 import back from '../../pablic/Forward.svg'
 import { useAppDispatch, useAppSelector } from '../../store/Store'
-import { thankSortPrice,thankSortProduct} from '../../store/Slice/ProductSlice'
+import {
+  thankSortPrice,
+  thankSortProduct,
+} from '../../store/Slice/ProductSlice'
 import { Portal } from '../portal/Portal'
 import Nouislider from 'nouislider-react'
 import 'nouislider/distribute/nouislider.css'
@@ -104,11 +107,45 @@ export const Sorting = () => {
           </div>
           {flagSort ? (
             <div className="sort_product">
-              <p onClick={()=> dispatch(thankSortProduct({sort: "Price", currentPage}))}>Price</p>
-              <p onClick={()=> dispatch(thankSortProduct({sort: "Name", currentPage}))}>Name</p>
-              <p onClick={()=> dispatch(thankSortProduct({sort: "Author name", currentPage}))}>Author name</p>
-              <p onClick={()=> dispatch(thankSortProduct({sort: "Rating", currentPage}))}>Rating</p>
-              <p onClick={()=> dispatch(thankSortProduct({sort: "Date of issue", currentPage}))}>Date of issue</p>
+              <p
+                onClick={() =>
+                  dispatch(thankSortProduct({ sort: 'Price', currentPage }))
+                }
+              >
+                Price
+              </p>
+              <p
+                onClick={() =>
+                  dispatch(thankSortProduct({ sort: 'Name', currentPage }))
+                }
+              >
+                Name
+              </p>
+              <p
+                onClick={() =>
+                  dispatch(
+                    thankSortProduct({ sort: 'Author name', currentPage })
+                  )
+                }
+              >
+                Author name
+              </p>
+              <p
+                onClick={() =>
+                  dispatch(thankSortProduct({ sort: 'Rating', currentPage }))
+                }
+              >
+                Rating
+              </p>
+              <p
+                onClick={() =>
+                  dispatch(
+                    thankSortProduct({ sort: 'Date of issue', currentPage })
+                  )
+                }
+              >
+                Date of issue
+              </p>
             </div>
           ) : null}
         </div>

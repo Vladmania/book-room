@@ -143,5 +143,6 @@ export const UserProfileStyle = styled.div`
                 border-radius: 16px;
                 background-color: #344966;
                 margin: 50px 0 0 0;
+                cursor: pointer;
         }
 `

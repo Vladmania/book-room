@@ -3,11 +3,15 @@ import imgbooks from '../../pablic/unsplash_DgQf1dUKUTM (1).png'
 import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../store/Store'
 import { ProductInCart } from './ProductInCart'
+import { Navigate } from "react-router-dom";
 
 export const Cart = () => {
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.profil.profil)
+  const isAuts = useAppSelector((state) => state.profil.isAuts)
   const prod = useAppSelector((state) => state.cart.product)
+  if(!isAuts){
+    return <Navigate to="/"></Navigate>
+}
   const addProductInCart = prod.map((e) => (
     <ProductInCart
       id={e.id}
@@ -41,7 +45,7 @@ export const Cart = () => {
         <>
           {addProductInCart}
           <CartTotal>
-            <h3>Total: {sum}</h3>
+            <h3>Total: {sum.toFixed(2)}</h3>
             <div className="cart_button collection">
               <div className="cart_button_сontinue">Continue shopping</div>
               <div className="cart_button_сhekout">Chekout</div>

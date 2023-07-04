@@ -11,7 +11,6 @@ export const CatalogStyle = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
-        margin: 0 0 152px 0;
     span{
         width: 10px;
         height: 10px;

@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../store/Store'
 import { thankgetReviews } from '../../store/Slice/ReviewsSlice'
 import { thankaddInCart } from '../../store/Slice/CartSlice'
 import { BannerAuthorizeNow } from '../banner/BannerAuthorizeNow'
+import { Recommendations } from '../recommendations/Recommendations'
 import { useParams } from 'react-router-dom'
 
 interface IProductPage {
@@ -31,6 +32,7 @@ export const ProductPage = (props: IProps) => {
   const user = useAppSelector((state) => state.profil.profil)
   const dispatch = useAppDispatch()
   let param = useParams()
+
 
   const overallRating = rating.filter((event) =>
     event.rating ? event.rating : null
@@ -178,6 +180,7 @@ export const ProductPage = (props: IProps) => {
       </ProductPageStyle>
       <Reviews rating={grade} sum={sum} />
       {isAuts ? null : <BannerAuthorizeNow />}
+      <Recommendations />
     </>
   )
 }

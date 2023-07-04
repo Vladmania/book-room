@@ -5,15 +5,28 @@ import imgpassword from "../../pablic/Hide.svg"
 import imgCamera from "../../pablic/Camera.svg"
 import { useAppSelector, useAppDispatch } from '../../store/Store'
 import noUserPhoto from '../../pablic/User photo.png'
-import { thankPutPhoto, thankPostCheck } from '../../store/Slice/ProfilSlice'
+import { thankPutPhoto,thankEditorDataUser, thankEditorPasswordUser} from '../../store/Slice/ProfilSlice'
 import { useState } from 'react'
+import { Navigate } from "react-router-dom";
 
 
 export const UserProfile = () =>{  
     const dispatch = useAppDispatch()
     const profils = useAppSelector((state) => state.profil.profil)  
+    const isAuts = useAppSelector((state) => state.profil.isAuts) 
     const[changeInfo, setChangeInfo] = useState(Boolean)
+    const[error ,setError] = useState(Boolean)
     const[changePassword, setChangePassword] = useState(Boolean)
+    const[name, setName] = useState(String)
+    const[email, setEmail] = useState(String)
+    const[oldPassword, setOldPassword] = useState(String)
+    const[newPassword, setNewPassword] = useState(String)
+    const[replayPassword, setReplayPassword] = useState("")
+    console.log(profils);
+
+    if(!isAuts){
+        return <Navigate to="/"></Navigate>
+    }
     
 
 const handleFileInput = (event: React.ChangeEvent) => {
@@ -24,6 +37,30 @@ const handleFileInput = (event: React.ChangeEvent) => {
     data.append("id", String(profils[0].id))
     dispatch(thankPutPhoto(data))  
 };
+const handleChangePassword = () => {
+    if(changeInfo && changePassword){
+        if(newPassword === replayPassword){
+            setError(false)
+            dispatch(thankEditorPasswordUser({token:profils[0].token, oldPassword, newPassword})) 
+            dispatch(thankEditorDataUser({token:profils[0].token, name: name || profils[0].name, email: email || profils[0].email}))
+            setChangeInfo(false)
+            setChangePassword(false)
+        }else{setError(true)}
+    } 
+    else if(changeInfo){
+        dispatch(thankEditorDataUser({token:profils[0].token, name: name || profils[0].name, email: email || profils[0].email}))
+        setChangeInfo(false)
+    }else if(changePassword){
+        if(newPassword === replayPassword){
+            setError(false)
+            dispatch(thankEditorPasswordUser({token:profils[0].token, oldPassword, newPassword}))
+            setChangePassword(false)
+        }else{setError(true)}
+        
+    }
+};
+
+
 
     return(<UserProfileStyle>
                 {profils[0] ? <><div className="UserProfile_photo">
@@ -43,45 +80,46 @@ const handleFileInput = (event: React.ChangeEvent) => {
                     <h2>Personal information</h2>
                     <p onClick={()=> setChangeInfo(changeInfo ? false : true)}>Change information</p>
                 </div>
-                <div className="userProfile_information_input">
+                <div className="userProfile_information_input" style={changeInfo ? {boxShadow: '1px 1px 13px #8d8989'}: {}}>
                     <img src={imgprofil} alt="" className="userProfile_profile_img"/>
                     <div className="userProfile_profile_info">
                         <p>Your name</p>
-                        {changeInfo ? <input type="text" placeholder=""/> : <input type="text" placeholder="" value={profils[0].name}/>}
+                        {changeInfo ? <input type="text" placeholder="" onChange={(e)=> setName(e.target.value)}/> : <input type="text" placeholder="" value={profils[0].name}/>}
                     </div>
                 </div>
-                <div className="userProfile_information_input">
+                <div className="userProfile_information_input" style={changeInfo ? {boxShadow: '1px 1px 13px #8d8989'}: {}}>
                     <img src={imgemail} alt="" />
                     <div className="userProfile_profile_info">
                         <p>Your email</p>
-                        {changeInfo ? <input type="text" placeholder="" /> : <input type="text" placeholder="" value={profils[0].email}/>}
+                        {changeInfo ? <input type="text" placeholder="" onChange={(e)=> setEmail(e.target.value)}/> : <input type="text" placeholder="" value={profils[0].email}/>}
                     </div>
                 </div>
                 <div className="userProfile_information_password">
                     <h2>Password</h2>
                     <p onClick={()=> setChangePassword(changePassword ? false : true)}>Change password</p>
                 </div>
-                <div className="userProfile_information_input">
+                <div className="userProfile_information_input" style={changePassword ? {boxShadow: '1px 1px 13px #8d8989'}: {}}>
                     <img src={imgpassword} alt="" />
-                    <div className="userProfile_profile_info">
+                    <div className="userProfile_profile_info" >
                         <p>{changePassword ? "Old password":"Your password"}</p>
-                        {changePassword ? <input type="password" placeholder=""/> :<input type="password" placeholder="" value={profils[0].password}/>}
+                        {changePassword ? <input type="password" placeholder="" onChange={(e)=> setOldPassword(e.target.value)}/> :
+                        <input type="password" placeholder="" value={profils[0].password}/>}
                     </div>
                 </div>
-                {changePassword ? <><div className="userProfile_information_input">
+                {changePassword ? <><div className="userProfile_information_input" style={{boxShadow: '1px 1px 13px #8d8989'}}>
                     <img src={imgpassword} alt="" />
                     <div className="userProfile_profile_info">
-                        <input type="password" placeholder="New password" />
+                        <input type="password" placeholder="New password" onChange={(e)=> setNewPassword(e.target.value)}/>
                     </div>
                 </div>
                 <p>Enter your password</p>
-                <div className="userProfile_information_input">
+                <div className="userProfile_information_input" style={{boxShadow: '1px 1px 13px #8d8989'}}>
                     <img src={imgpassword} alt="" />
                     <div className="userProfile_profile_info">
-                        <input type="password" placeholder="Password replay" />
+                        <input type="password" placeholder="Password replay" onChange={(e)=> setReplayPassword(e.target.value)}/>
                     </div>
-                </div><p>Repeat your password without errors</p></> : null}
-                {changePassword || changeInfo ? <div className="userProfile_profile_button">Confirm</div> : null}
+                </div><p>{error ? "Repeat your password without errors": null}</p></> : null}
+                {changePassword || changeInfo ? <div className="userProfile_profile_button" onClick={()=> handleChangePassword()}>Confirm</div> : null}
             </div>
             </> : null}
         </UserProfileStyle>

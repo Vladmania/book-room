@@ -124,7 +124,8 @@ class UserController {
     }
 }
 async editorDataUser(req, res){
-      const {token, name, email} = req.body
+      const {name, email} = req.body
+      const token = req.headers.authorization.split(" ")[1]
       const decoded = jwt.verify(token, secret);
       const userProfil = await User.findOne({
         where: {
@@ -137,7 +138,8 @@ async editorDataUser(req, res){
       res.json([userProfil])
   }
   async editorPasswordUser(req, res){
-    const {token, oldPassword, newPassword} = req.body
+    const {oldPassword, newPassword} = req.body
+    const token = req.headers.authorization.split(" ")[1]
     const decoded = jwt.verify(token, secret);
     const userProfil = await User.findOne({
       where: {
@@ -151,7 +153,6 @@ async editorDataUser(req, res){
     await userProfil.save()
     res.json([userProfil])
   }
-    res.json([userProfil])
 }
 }
 

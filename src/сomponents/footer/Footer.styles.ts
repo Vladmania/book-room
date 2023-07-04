@@ -13,7 +13,7 @@ export const FooterStyle = styled.div`
     display: flex;
     justify-content: space-between;
     color: white;
-   
+   margin: 150px 0 0 0;
     .footer_email{
         margin: 40px 0 0;
     }

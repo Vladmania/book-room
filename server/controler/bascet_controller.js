@@ -54,7 +54,7 @@ class CartController {
     res.json(cartUser)
   }
   async getCart(req, res){
-    const { token } = req.body
+    const token = req.headers.authorization.split(" ")[1]
     const decoded = jwt.verify(token, secret);
     const ProductsInCart = await ProductInCart.findAll({
       where: {

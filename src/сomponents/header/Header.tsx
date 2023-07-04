@@ -9,6 +9,7 @@ import svgHeart from '../../pablic/Heart.svg'
 import svgUserProfil from '../../pablic/User profile (1).svg'
 import { useAppDispatch, useAppSelector } from '../../store/Store'
 import {openModal} from '../../store/Slice/ProfilSlice'
+import { thanksearchQuery } from '../../store/Slice/ProductSlice'
 
 export const Header: React.FC = () => {
   const isAuts = useAppSelector((state) => state.profil.isAuts)
@@ -25,7 +26,7 @@ export const Header: React.FC = () => {
         <h3>Catalog</h3>
         <div className="header_poisk">
           <img src={search} alt="search" />
-          <input placeholder="Search" />
+          <input placeholder="Search" onChange={event => dispatch(thanksearchQuery(event.target.value))}/>
         </div>
       </div>
       {isAuts ? (
