@@ -22,7 +22,6 @@ export const UserProfile = () =>{
     const[oldPassword, setOldPassword] = useState(String)
     const[newPassword, setNewPassword] = useState(String)
     const[replayPassword, setReplayPassword] = useState("")
-    console.log(profils);
 
     if(!isAuts){
         return <Navigate to="/"></Navigate>
@@ -60,8 +59,6 @@ const handleChangePassword = () => {
     }
 };
 
-
-
     return(<UserProfileStyle>
                 {profils[0] ? <><div className="UserProfile_photo">
                     <img src={profils[0].photo ? "http://localhost:5000/" + profils[0].photo : noUserPhoto  } 
@@ -91,7 +88,7 @@ const handleChangePassword = () => {
                     <img src={imgemail} alt="" />
                     <div className="userProfile_profile_info">
                         <p>Your email</p>
-                        {changeInfo ? <input type="text" placeholder="" onChange={(e)=> setEmail(e.target.value)}/> : <input type="text" placeholder="" value={profils[0].email}/>}
+                        {changeInfo ? <input type="email" placeholder="" onChange={(e)=> setEmail(e.target.value)}/> : <input type="text" placeholder="" value={profils[0].email}/>}
                     </div>
                 </div>
                 <div className="userProfile_information_password">

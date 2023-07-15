@@ -9,7 +9,6 @@ export const FooterStyle = styled.div`
     line-height: 30px;
     background: #0D1821;
     width: 100%;
-    height: 341px;
     display: flex;
     justify-content: space-between;
     color: white;
@@ -29,4 +28,27 @@ export const FooterStyle = styled.div`
         text-decoration: none;
         color: aliceblue;
     }
+    @media (max-width: 873px) {
+        font-size: 16px;
+    .footer_nav{
+        margin: 0 16px 0 0;
+    }
+    .footer_map{
+        width: 48%;
+    }
+    .footer_map_img{
+        width: 94%;
+    }
+   }
+   @media (max-width: 600px) {
+    .footer_content{
+        flex-direction: column;
+    }
+    .footer_map{
+        width: 100%;
+    }
+    .footer_map img{
+        width: 100%;
+    }
+   }
 `

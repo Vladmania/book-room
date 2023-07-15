@@ -1,4 +1,4 @@
-import { ProductCardStyle } from './ProductCardStyle'
+import { ProductCardStyle } from './ProductCard.Style'
 import star from '../../../pablic/Starno.svg'
 import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../store/Store'

@@ -2,7 +2,9 @@ const ConnectSequelize = require('../middleware/databaseСonnection')
 const { DataTypes } = require('sequelize')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const validator = require('validator')
 const { secret } = require('./config')
+const { tokenLifetime } = require('./config')
 
 const User = ConnectSequelize.define('UserProfils', {
   email: {
@@ -35,125 +37,119 @@ const User = ConnectSequelize.define('UserProfils', {
   },
 })
 
-
 const generetToken = (userId, email) => {
   const payload = {
     userId,
     email,
   }
-  return jwt.sign(payload, secret, { expiresIn: '10h' })
+  return jwt.sign(payload, secret, { expiresIn: tokenLifetime })
 }
 
 class UserController {
   async registration(req, res) {
-    const { email, password } = req.body
-    const condidat = await User.findOne({ where: { email: email } })
-    if (condidat !== null) {
-      return res
-        .status(400)
-        .json({ message: 'Пользователь с таким Email уже существует' })
-    } else {
-      const passwordHash = bcrypt.hashSync(password, 3)
-      await User.create({
-        email: email,
-        password: passwordHash,
-        name: '',
-        photo: '',
-        token: ''
-      })
-      const userprofil = await User.findAll({
-        where: { email: email, password: passwordHash},
-      })
-      if(userprofil){
-        const token = generetToken(
-          userprofil.id,
-          userprofil.email,
-        )
-        userprofil.token = token
-        await userprofil.save()
-        
-        res.json(userprofil)
-      }
-      
+    try {
+      const { email, password } = req.body
+      const emailValidity = validator.isEmail(email)
+      if (emailValidity) {
+        const condidat = await User.findOne({ where: { email: email } })
+        if (condidat !== null) {
+          res.json('User with this Email already exists')
+        } else {
+          const passwordHash = bcrypt.hashSync(password, 3)
+          await User.create({
+            email: email,
+            password: passwordHash,
+            name: '',
+            photo: '',
+            token: '',
+          })
+          const userprofil = await User.findAll({
+            where: { email: email, password: passwordHash },
+          })
+
+          res.json(userprofil)
+        }
+      } else res.json('Email invalid')
+    } catch (e) {
+      console.log(e)
     }
   }
   async login(req, res) {
-    const { email, password } = req.body
-    const userprofil = await User.findOne({ where: { email: email } })
-    if (!userprofil) {
-      res.json(null)
-    } else {
-      const validPassword = bcrypt.compareSync(password, userprofil.password)
-      if (!validPassword) {
-        res.json(null)
-      } else {
-        const token = generetToken(
-          userprofil.id,
-          userprofil.email,
-        )
-        userprofil.token = token
-        await userprofil.save()
-        res.json([userprofil])
-      }
-    }
-  }
-  async checkUser(req, res){
-    const token = req.headers.authorization.split(" ")[1]
     try {
-      const decoded = jwt.verify(token, secret);
-      if(decoded){
-        const userprofil = await User.findAll({ where: { id: decoded.userId } })
-        res.json(userprofil)
-      }else{}
-    } catch(err) {
-      console.log(err);
+      const { email, password } = req.body
+      const userprofil = await User.findOne({ where: { email: email } })
+      if (!userprofil) {
+        res.json('Invalid email')
+      } else {
+        const validPassword = bcrypt.compareSync(password, userprofil.password)
+        if (!validPassword) {
+          res.json('Invalid password')
+        } else {
+          const token = generetToken(userprofil.id, userprofil.email)
+          userprofil.token = token
+          await userprofil.save()
+          res.json([userprofil])
+        }
+      }
+    } catch (e) {
+      console.log(e)
     }
   }
-  async editorPhotoUser(req, res){
-    if(req.file){
-        const {id} = req.body
-        const photo = req.file.path
-        const userProfil = await User.findOne({
-          where: {
-            id
-          } 
+  async checkUser(req, res) {
+    try {
+      const token = req.body.token
+      const userprofil = await User.findAll({ where: { id: token.userId } })
+      res.json(userprofil)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  async editorPhotoUser(req, res) {
+    if (req.file) {
+      const { id } = req.body
+      const photo = req.file.path
+      const userProfil = await User.findOne({
+        where: {
+          id,
+        },
       })
       userProfil.photo = photo
       await userProfil.save()
-        res.json([userProfil])
+      res.json([userProfil])
     }
-}
-async editorDataUser(req, res){
-      const {name, email} = req.body
-      const token = req.headers.authorization.split(" ")[1]
-      const decoded = jwt.verify(token, secret);
-      const userProfil = await User.findOne({
-        where: {
-          id: decoded.userId
-        } 
+  }
+  async editorDataUser(req, res) {
+    const { name, email, token } = req.body
+    const userProfil = await User.findOne({
+      where: {
+        id: token.userId,
+      },
     })
     userProfil.name = name
     userProfil.email = email
     await userProfil.save()
-      res.json([userProfil])
-  }
-  async editorPasswordUser(req, res){
-    const {oldPassword, newPassword} = req.body
-    const token = req.headers.authorization.split(" ")[1]
-    const decoded = jwt.verify(token, secret);
-    const userProfil = await User.findOne({
-      where: {
-        id: decoded.userId
-      } 
-  })
-  const validPassword = bcrypt.compareSync(oldPassword, userProfil.password)
-  if(validPassword){
-    const passwordHash = bcrypt.hashSync(newPassword, 3)
-    userProfil.password = passwordHash
-    await userProfil.save()
     res.json([userProfil])
   }
-}
+  async editorPasswordUser(req, res) {
+    try {
+      const { oldPassword, newPassword, token } = req.body
+      const userProfil = await User.findOne({
+        where: {
+          id: token.userId,
+        },
+      })
+      const validPassword = bcrypt.compareSync(oldPassword, userProfil.password)
+      if (validPassword) {
+        const passwordHash = bcrypt.hashSync(newPassword, 3)
+        userProfil.password = passwordHash
+        await userProfil.save()
+        res.json([userProfil])
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
 
 module.exports = new UserController()

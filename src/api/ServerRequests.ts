@@ -23,7 +23,7 @@ export const postLogin = (email: string, password: string) => {
   return axios.post('http://localhost:5000/api/login', { email, password })
 }
 
-export const getCheck = (token: string | null) => {
+export const getCheck = (token: string ) => {
   return axios.post(
     'http://localhost:5000/api/check',
     { token },

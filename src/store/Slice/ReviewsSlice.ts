@@ -60,14 +60,22 @@ export const { addReviewsState } = reviewsSlice.actions
 export const thankaddReviews = createAsyncThunk<IReviews[], IReviews>(
   'reviews/thankaddReviews',
   async ({ prductId, name, avatar, feedback, rating }) => {
-    const respons = await addReviews(prductId, name, avatar, feedback, rating)
-    return respons.data
+    try{
+      const respons = await addReviews(prductId, name, avatar, feedback, rating)
+      return respons.data
+    }catch(e){
+       console.log(); 
+    }
   }
 )
 export const thankgetReviews = createAsyncThunk<IReviews[], number>(
   'reviews/thankgetReviews',
   async (idProduct) => {
-    const respons = await getReviews(idProduct)
-    return respons.data
+    try{
+      const respons = await getReviews(idProduct)
+      return respons.data
+    }catch(e){
+       console.log(); 
+    }
   }
 )

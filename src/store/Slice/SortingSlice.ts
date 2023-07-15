@@ -26,7 +26,6 @@ interface IInitialState{
 
 const initialState: IInitialState = {
   genres: [
-    {switch: false, genre: 'Fiction'},
     {switch: false, genre: 'Non-fiction'},
     {switch: false, genre: 'Business & finance'},
     {switch: false, genre: 'Politics'},
@@ -35,7 +34,6 @@ const initialState: IInitialState = {
     {switch: false, genre: 'Satire'},
     {switch: false, genre: 'Horror'},
     {switch: false, genre: 'Children’s books'},
-    {switch: false, genre: 'Encyclopedia'},
     {switch: false, genre: "Fantasy"},
   ],
   sort: [],
@@ -92,8 +90,12 @@ export const {SwitchSortGanreOn, SwitchSortGanreOff} = sortingSlice.actions
 export const thankSortProductGanre = createAsyncThunk<ProductCard[], ISortProduct >(
     'sorting/thankSortProductGanre',
     async ({genre, currentPage}) => {
-      const respons = await sortProductGenre(genre , currentPage)
-      return respons.data
+      try{
+        const respons = await sortProductGenre(genre , currentPage)
+        return respons.data
+      }catch(e){
+          console.log(e);
+      }
     }
   )
 

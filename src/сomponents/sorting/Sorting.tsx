@@ -69,7 +69,7 @@ export const Sorting = () => {
     <SortingStyle>
       <h2>Catalog</h2>
       <div className="sort_categories">
-        <div>
+        <div className="sort_button">
           <div
             className="sort_categories_element"
             onClick={() => toggleGenre()}
@@ -81,7 +81,7 @@ export const Sorting = () => {
             <div className="sort_categories_genre">{genres}</div>
           ) : null}
         </div>
-        <div>
+        <div className="sort_button">
           <div
             className="sort_categories_element"
             onClick={() => togglePrice()}

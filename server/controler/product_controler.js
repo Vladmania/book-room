@@ -241,12 +241,11 @@ class ProductControler {
   }
   async searchQuery(req, res) {
     const { query } = req.body
-    let q = query.toLowerCase()
-    console.log(q);
+    let q = query
+    console.log(String(q));
     const changeProduct = await Product.findAll()
-    const respons = changeProduct.filter(item => item.name.split('').includes(query))
-    console.log(respons);
-    // res.json(respons)
+    const respons = changeProduct.filter(item => item.name.toLowerCase().includes(query.toLowerCase()))
+    res.json(respons)
   }
 }
 

@@ -166,4 +166,46 @@ export const SortingStyle = styled.div`
     line-height: 28px;
     letter-spacing: 0.75px;
 }
+@media (max-width: 873px) {
+    margin: 110px 2% 50px;
+    display: block;
+    .sort_categories{
+        justify-content: space-between;
+    }
+    .sort_categories_element{
+        margin: 0 19px 0 0;
+        gap: 50%;
+    }
+    .sort_button{
+        width: 30%;
+    }
+    .sort_price_regulator{
+        width: 290px;
+    }
+   }
+   @media (max-width: 610px) {
+    margin: 20px;
+    .sort_button {
+    width: 100%;
+    }
+    .sort_categories{
+        flex-direction: column;
+    }
+    .sort_categories_product{
+        gap: 38%;
+        justify-content: space-between;
+        margin: 20px 0 0 0;
+        
+    }
+    .sort_categories_element{
+        margin: 20px 0 0 0;
+        justify-content: space-between;
+    }
+    .sort_price_regulator{
+        width: 260px;
+    }
+    .sort_categories_genre{
+        width: 220px;
+    }
+   }
 `

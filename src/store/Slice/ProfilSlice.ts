@@ -52,6 +52,9 @@ export const profilSlice = createSlice({
     openModal: (state, action) => {
       state.modal = action.payload
     },
+    messageError: (state, action) => {
+      state.message = action.payload
+    },
   },
   extraReducers(builder) {
     builder.addCase(thankPostCheck.pending, (state) => {
@@ -67,29 +70,33 @@ export const profilSlice = createSlice({
     })
     builder.addCase(thankPostLogin.pending, (state) => {
       state.loading = true
+      state.message = ''
     })
     builder.addCase(thankPostLogin.fulfilled, (state, actions) => {
-      state.profil = actions.payload
-      state.loading = false
-      state.isAuts = true
-      state.modal = false
+      if (actions.payload !== undefined) {
+        state.profil = actions.payload
+        state.loading = false
+        state.isAuts = true
+        state.modal = false
+      }
     })
     builder.addCase(thankPostLogin.rejected, (state) => {
-      state.message = 'неверный логин или пароль'
       state.error = true
       state.loading = false
     })
     builder.addCase(thankPostRegistrtion.pending, (state) => {
       state.loading = true
+      state.message = ''
     })
     builder.addCase(thankPostRegistrtion.fulfilled, (state, actions) => {
-      state.profil = actions.payload
-      state.loading = false
-      state.isAuts = true
-      state.modal = false
+      if (actions.payload !== undefined) {
+        state.profil = actions.payload
+        state.loading = false
+        state.isAuts = true
+        state.modal = false
+      }
     })
-    builder.addCase(thankPostRegistrtion.rejected, (state) => {
-      state.error = true
+    builder.addCase(thankPostRegistrtion.rejected, (state, actions) => {
       state.loading = false
     })
     builder.addCase(thankPutPhoto.pending, (state) => {
@@ -129,42 +136,70 @@ export const profilSlice = createSlice({
   },
 })
 
-export const { openModal } = profilSlice.actions
+export const { openModal, messageError } = profilSlice.actions
 
 export const thankPostRegistrtion = createAsyncThunk<IUserProfil[], IProps>(
   'profil/thankPostRegistrtion',
-  async (data) => {
-    const { email, password } = data
-    const response = await postRegistrtion(email, password)
-    localStorage.setItem('token', response.data[0].token)
-    return response.data
+  async (data, { dispatch }) => {
+    try {
+      const { email, password } = data
+      const response = await postRegistrtion(email, password)
+      localStorage.setItem('token', response.data[0].token)
+      console.log(response.data)
+      if (response.data === 'Email invalid') {
+        dispatch(messageError('Email invalid'))
+      } else if (response.data === 'User with this Email already exists') {
+        dispatch(messageError('User with this Email already exists'))
+      } else {
+        return response.data
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
 )
 
 export const thankPostLogin = createAsyncThunk<IUserProfil[], IProps>(
   'profil/thankPostLogin',
-  async (data) => {
-    const { email, password } = data
-    const response = await postLogin(email, password)
-    localStorage.setItem('token', response.data[0].token)
-    return response.data
+  async (data, { dispatch }) => {
+    try {
+      const { email, password } = data
+      const response = await postLogin(email, password)
+      if (response.data === 'Invalid email') {
+        dispatch(messageError('Invalid email'))
+      } else if (response.data === 'Invalid password') {
+        dispatch(messageError('Invalid password'))
+      } else {
+        localStorage.setItem('token', response.data[0].token)
+        return response.data
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
 )
 
-export const thankPostCheck = createAsyncThunk<IUserProfil[], string | null>(
+export const thankPostCheck = createAsyncThunk<IUserProfil[], string>(
   'profil/thankPostCheck',
-  async (data) => {
-    const token = data
-    const response = await getCheck(token)
-    return response.data
+  async (token) => {
+    try {
+      const response = await getCheck(token)
+      return response.data
+    } catch (e) {
+      console.log(e)
+    }
   }
 )
 
 export const thankPutPhoto = createAsyncThunk<IUserProfil[], FormData>(
   'profil/thankPutPhoto',
   async (data) => {
-    const response = await putEditorAvatar(data)
-    return response.data
+    try {
+      const response = await putEditorAvatar(data)
+      return response.data
+    } catch (e) {
+      console.log(e)
+    }
   }
 )
 
@@ -172,17 +207,26 @@ export const thankEditorDataUser = createAsyncThunk<
   IUserProfil[],
   { token: string, name: string, email: string }
 >('profil/thankEditorDataUser', async (data) => {
-  const response = await editorDataUser(data.token, data.name, data.email)
-  return response.data
+  try {
+    const response = await editorDataUser(data.token, data.name, data.email)
+    return response.data
+  } catch (e) {
+    console.log(e)
+  }
 })
+
 export const thankEditorPasswordUser = createAsyncThunk<
   IUserProfil[],
   { token: string, oldPassword: string, newPassword: string }
 >('profil/thankEditorPasswordUser', async (data) => {
-  const response = await editorPasswordUser(
-    data.token,
-    data.oldPassword,
-    data.newPassword
-  )
-  return response.data
+  try {
+    const response = await editorPasswordUser(
+      data.token,
+      data.oldPassword,
+      data.newPassword
+    )
+    return response.data
+  } catch (e) {
+    console.log(e)
+  }
 })

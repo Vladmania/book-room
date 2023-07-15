@@ -18,9 +18,9 @@ export const Footer = () =>{
                         <Link to={'/profil'}><p>My Account</p></Link>
                         <Link to={'/cart'}><p>Cart</p></Link>
                     </div>
-                <div>
+                <div className="footer_map">
                     <p>6391 Elgin St. Celina, Delaware 10299</p>
-                    <img src={map} alt="карта" />
+                    <img src={map} alt="карта" className="footer_map_img"/>
                 </div>
             </div>
         </FooterStyle>

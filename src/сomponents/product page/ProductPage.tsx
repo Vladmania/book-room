@@ -33,7 +33,6 @@ export const ProductPage = (props: IProps) => {
   const dispatch = useAppDispatch()
   let param = useParams()
 
-
   const overallRating = rating.filter((event) =>
     event.rating ? event.rating : null
   )
@@ -122,30 +121,35 @@ export const ProductPage = (props: IProps) => {
           <div className="product_page_buttons">
             <div className="product_page_button_paperback">
               <p>Paperback</p>
-              <div
-                className={
-                  Number(props.value.paperback_price) === 0
-                    ? 'product_page_paperback'
-                    : 'product_page_hardcover'
-                } onClick={()=> dispatch(
-                  thankaddInCart({
-                    userId: user[0].id,
-                    productId: props.value.id,
-                    name: props.value.name,
-                    autor: props.value.autor,
-                    cover: props.value.cover,
-                    price:
-                      Number(props.value.hardcover_price) === 0
-                        ? props.value.paperback_price
-                        : props.value.hardcover_price,
-                    quantity: 1,
-                  })
-                )}
-              >
-                {Number(props.value.paperback_price) === 0
-                  ? 'Not available'
-                  : `$ ${props.value.paperback_price} USD`}
-              </div>
+              {Number(props.value.paperback_price) === 0 ? (
+                <div className="product_page_paperback">Not available</div>
+              ) : (
+                <div
+                  className={
+                    Number(props.value.paperback_price) === 0
+                      ? 'product_page_paperback'
+                      : 'product_page_hardcover'
+                  }
+                  onClick={() =>
+                    dispatch(
+                      thankaddInCart({
+                        userId: user[0].id,
+                        productId: props.value.id,
+                        name: props.value.name,
+                        autor: props.value.autor,
+                        cover: props.value.cover,
+                        price:
+                          Number(props.value.hardcover_price) === 0
+                            ? props.value.paperback_price
+                            : props.value.hardcover_price,
+                        quantity: 1,
+                      })
+                    )
+                  }
+                >
+                  $ {props.value.paperback_price} USD
+                </div>
+              )}
             </div>
             <div>
               <p>Hardcover</p>
@@ -155,20 +159,22 @@ export const ProductPage = (props: IProps) => {
                     ? 'product_page_paperback'
                     : 'product_page_hardcover'
                 }
-                onClick={()=> dispatch(
-                  thankaddInCart({
-                    userId: user[0].id,
-                    productId: props.value.id,
-                    name: props.value.name,
-                    autor: props.value.autor,
-                    cover: props.value.cover,
-                    price:
-                      Number(props.value.hardcover_price) === 0
-                        ? props.value.paperback_price
-                        : props.value.hardcover_price,
-                    quantity: 1,
-                  })
-                )}
+                onClick={() =>
+                  dispatch(
+                    thankaddInCart({
+                      userId: user[0].id,
+                      productId: props.value.id,
+                      name: props.value.name,
+                      autor: props.value.autor,
+                      cover: props.value.cover,
+                      price:
+                        Number(props.value.hardcover_price) === 0
+                          ? props.value.paperback_price
+                          : props.value.hardcover_price,
+                      quantity: 1,
+                    })
+                  )
+                }
               >
                 {Number(props.value.hardcover_price) === 0
                   ? 'Not available'

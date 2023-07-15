@@ -1,3 +1,5 @@
 module.exports ={
-    secret: "SECRET_KEY_RANDOM"
+    tokenLifetime: "10h",
+    secret: "SECRET_KEY",
+
 }

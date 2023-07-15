@@ -101,26 +101,37 @@ export const { deleteProduct, decreaseQuantity, increaseQuantity } = CartSlice.a
 export const thankaddInCart = createAsyncThunk<IProductInCart[], IProps>(
   'cart/thankaddInCart',
   async ({ ...data }) => {
-    const respons = await addInCart({ ...data })
+    try{
+      const respons = await addInCart({ ...data })
     return respons.data
+    }catch(e){
+      console.log(e);
+    }
   }
 )
 
 export const thankGetProductCart = createAsyncThunk<IProductInCart[], string>(
   'cart/thankGetProductCart',
   async (token) => {
-    const respons = await getCart(token)
-    return respons.data
+    try{
+      const respons = await getCart(token)
+      return respons.data
+    }catch(e){
+      console.log(e);
+    }
   }
 )
 
 export const thankDeleteProduct = createAsyncThunk<IProductInCart[], number>(
   'cart/thankDeleteProduct',
   async (id) => {
-    const respons = await deleteFromCart(id)
-    console.log(respons.data)
-
-    return respons.data
+    try{
+      const respons = await deleteFromCart(id)
+      console.log(respons.data)
+      return respons.data
+    }catch(e){
+      console.log(e);
+    }
   }
 )
 
@@ -128,16 +139,24 @@ export const thankIncreaseQuantityInCart = createAsyncThunk<
   IProductInCart[],
   IEditCart
 >('cart/thankIncreaseQuantityInCart', async ({ id, quantity },{dispatch}) => {
-  const respons = await editCartQuantity(id, quantity)
-  dispatch(increaseQuantity(id))
-  return respons.data
+  try{
+    const respons = await editCartQuantity(id, quantity)
+    dispatch(increaseQuantity(id))
+    return respons.data
+  }catch(e){
+    console.log(e); 
+  }
 })
 
 export const thankDecreaseQuantityInCart = createAsyncThunk<
   IProductInCart[],
   IEditCart
 >('cart/thankDecreaseQuantityInCart', async ({ id, quantity },{dispatch}) => {
-  const respons = await editCartQuantity(id, quantity)
-  dispatch(decreaseQuantity(id))
-  return respons.data
+  try{
+    const respons = await editCartQuantity(id, quantity)
+    dispatch(decreaseQuantity(id))
+    return respons.data
+  }catch(e){
+    console.log(e);  
+  }
 })

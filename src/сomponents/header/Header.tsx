@@ -1,4 +1,5 @@
 import { StyleHeader } from './HeaderStyle'
+import { StyleHeaderPoisk } from './HeaderStyle'
 import logo from '../../pablic/logo.png'
 import search from '../../pablic/Search.png'
 import { Authorizations } from '../authorizations/Authorizations'
@@ -18,12 +19,12 @@ export const Header: React.FC = () => {
   const dispatch = useAppDispatch()
 
   return (
-    <StyleHeader>
+    <><StyleHeader>
       <Link to={'/'}>
-        <img src={logo} alt="logo" />
+        <img src={logo} alt="logo" className="header_logo"/>
       </Link>
+      <h3>Catalog</h3>
       <div className="header_search">
-        <h3>Catalog</h3>
         <div className="header_poisk">
           <img src={search} alt="search" />
           <input placeholder="Search" onChange={event => dispatch(thanksearchQuery(event.target.value))}/>
@@ -57,5 +58,9 @@ export const Header: React.FC = () => {
         </Portal>
       ) : null}
     </StyleHeader>
+    <StyleHeaderPoisk className="header_poisk_mobail">
+    <img src={search} alt="search" />
+    <input placeholder="Search" onChange={event => dispatch(thanksearchQuery(event.target.value))}/>
+  </StyleHeaderPoisk></>
   )
 }

@@ -17,7 +17,7 @@ export const RecommendationsStyle = styled.div`
   }
   .recommendations_page {
     display: grid;
-    grid-template-columns: repeat(4, 2fr);
+    grid-template-columns: repeat(12, 2fr);
     grid-column-gap: 20px;
     margin: 50px 0 0 0;
   }

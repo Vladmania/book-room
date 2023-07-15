@@ -5,9 +5,11 @@ import hide from '../../pablic/Hide.svg'
 import close from '../../pablic/Close.png'
 import { useState } from 'react'
 import { useAppDispatch, useAppSelector } from '../../store/Store'
-import { thankPostRegistrtion,  thankPostLogin, openModal} from '../../store/Slice/ProfilSlice'
-
-
+import {
+  thankPostRegistrtion,
+  thankPostLogin,
+  openModal,
+} from '../../store/Slice/ProfilSlice'
 
 export const Authorizations = () => {
   const [entrance, setEntrance] = useState(false)
@@ -15,24 +17,17 @@ export const Authorizations = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordReplay, setPasswordReplay] = useState('')
-  const [confirmedPassword, setConfirmedPassword] = useState(false)
-  const [message, setMessage] = useState('')
   const dispatch = useAppDispatch()
-  const error = useAppSelector((state) => state.profil.error)
+  const errorMessage = useAppSelector((state) => state.profil.message)
 
   const comparisonPassword = () => {
     if (passwordReplay === password) {
       const arg = {
         email,
-        password
+        password,
       }
-      setConfirmedPassword(true);
-      setMessage("password matches")
       dispatch(thankPostRegistrtion(arg))
-    } else {
-      setConfirmedPassword(false);
-      setMessage("password does not match")
-    }
+    } 
   }
 
   const showPassword = () => {
@@ -43,8 +38,8 @@ export const Authorizations = () => {
     }
   }
 
-  const login = () =>{
-    dispatch(thankPostLogin({email, password}))
+  const login = () => {
+    dispatch(thankPostLogin({ email, password }))
   }
 
   return (
@@ -73,14 +68,18 @@ export const Authorizations = () => {
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          {error ? <p className="authorizations_message">неверный логин или пароль</p>: null}
+          {errorMessage ? (
+            <p className="authorizations_message">{errorMessage}</p>
+          ) : null}
           <p>Enter your email</p>
           <div className="authorizations_field">
             <img src={hide} alt="" onClick={() => showPassword()} />
             <input
               type={visibilityPassword ? 'text' : 'password'}
               placeholder="Password"
-              onChange={(e) => {setPassword(e.target.value)}}
+              onChange={(e) => {
+                setPassword(e.target.value)
+              }}
             />
           </div>
           <p>Enter your password</p>
@@ -91,17 +90,25 @@ export const Authorizations = () => {
                 <input
                   type={visibilityPassword ? 'text' : 'password'}
                   placeholder="Password replay"
-                  onChange={(e) =>{ setPasswordReplay(e.target.value)} }
+                  onChange={(e) => {
+                    setPasswordReplay(e.target.value)
+                  }}
                 />
               </div>
-              {confirmedPassword ? <p>{message}</p> : <p>{message}</p>}
               <p>Repeat your password without errors</p>
             </>
           ) : null}
           {entrance ? (
-            <div className="authorizations_button" onClick={()=> comparisonPassword()}>Sign Up</div>
+            <div
+              className="authorizations_button"
+              onClick={() => comparisonPassword()}
+            >
+              Sign Up
+            </div>
           ) : (
-            <div className="authorizations_button" onClick={()=> login()}>Log In</div>
+            <div className="authorizations_button" onClick={() => login()}>
+              Log In
+            </div>
           )}
         </div>
         <img src={people1} alt="" className="authorizations_picture" />

@@ -3,8 +3,9 @@ const router = new Router()
 const fileMiddleware = require('../middleware/file')
 const ProductControler = require('../controler/product_controler')
 const UserController = require('../controler/user_controler')
-const CartController = require('../controler/bascet_controller')
+const CartController = require('../controler/cart_controller')
 const ReviewsController = require('../controler/reviews_controller')
+const MiddlewareVerify = require('../middleware/verifaiToken')
 
 router.post('/prod', ProductControler.addProduct)
 router.get('/product', ProductControler.getProducts)
@@ -14,17 +15,17 @@ router.post('/changerating', ProductControler.changeRating)
 
 router.post('/registration', UserController.registration)
 router.post('/login', UserController.login)
-router.post('/check', UserController.checkUser)
+router.post('/check',MiddlewareVerify.verifyToken,UserController.checkUser)
 router.put(
   '/editoruserphoto',
   fileMiddleware.single('avatar'),
   UserController.editorPhotoUser
 )
-router.put('/editordata', UserController.editorDataUser)
-router.put('/editorpassword', UserController.editorPasswordUser)
+router.put('/editordata',MiddlewareVerify.verifyToken ,UserController.editorDataUser)
+router.put('/editorpassword',MiddlewareVerify.verifyToken ,UserController.editorPasswordUser)
 
 router.post('/addcart', CartController.addProductInBacket)
-router.post('/getcart', CartController.getCart)
+router.post('/getcart', MiddlewareVerify.verifyToken,CartController.getCart)
 router.delete('/delete/:id', CartController.removeProductFromCart)
 router.put('/editcart', CartController.changeTheQuantityInTheCart)
 
