@@ -24,11 +24,9 @@ export const Header: React.FC = () => {
         <img src={logo} alt="logo" className="header_logo"/>
       </Link>
       <h3>Catalog</h3>
-      <div className="header_search">
         <div className="header_poisk">
           <img src={search} alt="search" />
           <input placeholder="Search" onChange={event => dispatch(thanksearchQuery(event.target.value))}/>
-        </div>
       </div>
       {isAuts ? (
         <div className="header_button_collection">
@@ -37,10 +35,12 @@ export const Header: React.FC = () => {
             <div className="header_button_if_authorized">
               <img src={svgCart} alt="logo" />
             </div>
-          </Link>
+          </Link >
+          <Link to={'/favorites'}>
           <div className="header_button_if_authorized">
             <img src={svgHeart} alt="logo" />
           </div>
+          </Link>
           <Link to={'/profil'}>
             <div className="header_button_if_authorized">
               <img src={svgUserProfil} alt="logo" />

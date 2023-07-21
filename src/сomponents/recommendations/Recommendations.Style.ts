@@ -21,4 +21,15 @@ export const RecommendationsStyle = styled.div`
     grid-column-gap: 20px;
     margin: 50px 0 0 0;
   }
+  @media (max-width: 835px){
+    .recommendations_header {
+    font-size: 32px; 
+}
+  }
+  @media (max-width: 630px){
+    margin: 60px 2% 0;
+    .recommendations_header {
+      font-size: 18px; 
+}
+  }
 `

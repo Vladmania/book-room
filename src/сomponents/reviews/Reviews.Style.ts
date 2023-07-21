@@ -40,6 +40,7 @@ export const StyleReviewText = styled.div`
   }
   .review_text {
     margin: 9px 0 0 79px;
+    word-break: break-all;
   }
   .review_foto_collection {
     display: flex;
@@ -56,12 +57,15 @@ export const StyleReviewText = styled.div`
     object-fit: cover;
     border-radius: 16px;
   }
+  @media (max-width: 835px){
+    width: 80%;
+  }
 `
 
 export const StyleReview = styled.div`
   font-family: Poppins;
   font-style: normal;
-  margin: 0 5%;
+  margin: 100px 5% 0;
   textarea {
     display: flex;
     width: 50%;
@@ -103,4 +107,18 @@ export const StyleReview = styled.div`
     line-height: normal;
     margin: 0 0 45px 0;
   }
+  @media (max-width: 835px){
+    margin: 60px 2% 0;
+    textarea {
+      width: 90%;
+    }
+    h2{
+      font-size: 32px;
+    }
+  }
+  @media (max-width: 550px){
+   textarea {
+    width: 80%;
+   }
+}
 `

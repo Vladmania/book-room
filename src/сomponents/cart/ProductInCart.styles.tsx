@@ -10,7 +10,8 @@ export const ProductInCartStyle = styled.div`
         padding: 0 0 40px 0;
         box-shadow: 0px 2px 0px 0px rgba(176,176,178,0.3);
         .ProductInCart_cover{
-            width: 14%;
+            width: 197px;
+            height: 289px;
             border-radius: 16px;
         }
         p{
@@ -29,7 +30,11 @@ export const ProductInCartStyle = styled.div`
             background: #F0F4EF;
             border-radius: 50%;
             width: 25px;
-            text-align: center;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
         }
         .ProductInCart_quantity_and_removal input{
             width: 8%;
@@ -57,6 +62,38 @@ export const ProductInCartStyle = styled.div`
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button {
        appearance: none; 
+    }
+    @media (max-width: 835px) {
+        .ProductInCart_cover{
+            width: 255px;
+            height: 375px;
+        }
+        h2{
+            font-size: 32px;
+        }
+    }
+    @media (max-width: 630px) {
+        .ProductInCart_cover{
+            width: 135px;
+            height: 202px;
+        }
+        h2{
+            font-size: 18px;
+            line-height: 20px;
+            margin: 0 0 14px 0;
+        }
+        p{
+            font-size: 12px;
+        }
+        .ProductInCart_price{
+            font-size: 18px;
+        }
+        .ProductInCart_quantity_and_removal {
+            margin: 30px 0 30px 0;
+        }
+        .ProductInCart_information {
+            margin: 0 0 0 5%;
+        }
     }
    
 `

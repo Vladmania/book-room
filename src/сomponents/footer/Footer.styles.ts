@@ -41,6 +41,7 @@ export const FooterStyle = styled.div`
     }
    }
    @media (max-width: 600px) {
+    margin: 70px 0 0 0;
     .footer_content{
         flex-direction: column;
     }

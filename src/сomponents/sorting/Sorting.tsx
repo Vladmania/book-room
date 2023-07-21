@@ -7,7 +7,6 @@ import {
   thankSortPrice,
   thankSortProduct,
 } from '../../store/Slice/ProductSlice'
-import { Portal } from '../portal/Portal'
 import Nouislider from 'nouislider-react'
 import 'nouislider/distribute/nouislider.css'
 

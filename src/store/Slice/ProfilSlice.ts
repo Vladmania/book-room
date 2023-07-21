@@ -57,15 +57,15 @@ export const profilSlice = createSlice({
     },
   },
   extraReducers(builder) {
-    builder.addCase(thankPostCheck.pending, (state) => {
+    builder.addCase(thankAuthorizationCheck.pending, (state) => {
       state.loading = true
     })
-    builder.addCase(thankPostCheck.fulfilled, (state, actions) => {
+    builder.addCase(thankAuthorizationCheck.fulfilled, (state, actions) => {
       state.profil = actions.payload
       state.loading = false
       state.isAuts = true
     })
-    builder.addCase(thankPostCheck.rejected, (state) => {
+    builder.addCase(thankAuthorizationCheck.rejected, (state) => {
       state.loading = false
     })
     builder.addCase(thankPostLogin.pending, (state) => {
@@ -179,8 +179,8 @@ export const thankPostLogin = createAsyncThunk<IUserProfil[], IProps>(
   }
 )
 
-export const thankPostCheck = createAsyncThunk<IUserProfil[], string>(
-  'profil/thankPostCheck',
+export const thankAuthorizationCheck = createAsyncThunk<IUserProfil[], string>(
+  'profil/thankAuthorizationCheck',
   async (token) => {
     try {
       const response = await getCheck(token)

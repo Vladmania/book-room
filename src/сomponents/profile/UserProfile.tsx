@@ -100,7 +100,7 @@ const handleChangePassword = () => {
                     <div className="userProfile_profile_info" >
                         <p>{changePassword ? "Old password":"Your password"}</p>
                         {changePassword ? <input type="password" placeholder="" onChange={(e)=> setOldPassword(e.target.value)}/> :
-                        <input type="password" placeholder="" value={profils[0].password}/>}
+                        <input type="password" placeholder="" />}
                     </div>
                 </div>
                 {changePassword ? <><div className="userProfile_information_input" style={{boxShadow: '1px 1px 13px #8d8989'}}>

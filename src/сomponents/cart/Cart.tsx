@@ -37,7 +37,7 @@ export const Cart = () => {
               <br /> Go to the catalogue no.
             </p>
             <Link to={'/'}>
-              <span>Go to catalog</span>
+              <div>Go to catalog</div>
             </Link>
           </div>
         </CartStyle>

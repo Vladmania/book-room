@@ -5,6 +5,7 @@ import { profilSlice } from './Slice/ProfilSlice'
 import { CartSlice } from './Slice/CartSlice'
 import {sortingSlice} from './Slice/SortingSlice'
 import {reviewsSlice} from './Slice/ReviewsSlice'
+import { FavoritSlice } from "./Slice/FavoriteSlice"
 
 export const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ export const store = configureStore({
     cart: CartSlice.reducer,
     sorting: sortingSlice.reducer,
     review: reviewsSlice.reducer,
+    favorit: FavoritSlice.reducer,
   },
 })
 

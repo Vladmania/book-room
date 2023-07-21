@@ -9,6 +9,12 @@ import { thankgetReviews } from '../../store/Slice/ReviewsSlice'
 import { thankaddInCart } from '../../store/Slice/CartSlice'
 import { BannerAuthorizeNow } from '../banner/BannerAuthorizeNow'
 import { Recommendations } from '../recommendations/Recommendations'
+import {
+  thankDeleteProductFavorites,
+  deleteProduct,
+  thankaddInFavorites,
+} from '../../store/Slice/FavoriteSlice'
+import heartLike from '../../pablic/Heart (1).svg'
 import { useParams } from 'react-router-dom'
 
 interface IProductPage {
@@ -30,6 +36,8 @@ export const ProductPage = (props: IProps) => {
   const rating = useAppSelector((state) => state.review.review)
   const isAuts = useAppSelector((state) => state.profil.isAuts)
   const user = useAppSelector((state) => state.profil.profil)
+  const favorit = useAppSelector((state) => state.favorit.favorit)
+  const idProductinFavorit = favorit.map((e) => e.productId)
   const dispatch = useAppDispatch()
   let param = useParams()
 
@@ -44,6 +52,11 @@ export const ProductPage = (props: IProps) => {
     dispatch(thankgetReviews(Number(param.productId)))
   }, [dispatch])
 
+  const del = () => {
+    dispatch(thankDeleteProductFavorites(props.value.id))
+    dispatch(deleteProduct(props.value.id))
+  }
+
   return (
     <>
       {' '}
@@ -55,69 +68,168 @@ export const ProductPage = (props: IProps) => {
             className="product_page_cover_img"
           />
           <div className="product_page_favorites">
-            <img src={heart} alt="" />
+            {idProductinFavorit.includes(props.value.id) ? (
+              <img src={heartLike} alt="" onClick={() => del()} />
+            ) : (
+              <img
+                src={heart}
+                alt=""
+                onClick={() =>
+                  dispatch(
+                    thankaddInFavorites({
+                      userId: user[0].id,
+                      productId: props.value.id,
+                      name: props.value.name,
+                      autor: props.value.autor,
+                      cover: props.value.cover,
+                      price:
+                        Number(props.value.hardcover_price) === 0
+                          ? props.value.paperback_price
+                          : props.value.hardcover_price,
+                    })
+                  )
+                }
+              />
+            )}
           </div>
         </div>
-        <div>
+        <div className="product_page_info">
           <h1>{props.value.name}</h1>
           <h3>{props.value.autor}</h3>
           <div className="product_page_rating">
-            <img src={star} alt="" />
-            <p className="product_page_rating_ball">
-              {sum ? sum.toFixed(2) : 0}
-            </p>
-
-            <div className="rating">
-              <input
-                type="radio"
-                id="star-5"
-                name="rating"
-                value="5"
-                onChange={() => setGrade(5)}
-              />
-              <label title="Оценка «5»" htmlFor="star-5"></label>
-              <input
-                type="radio"
-                id="star-4"
-                name="rating"
-                value="4"
-                onChange={() => setGrade(4)}
-              />
-              <label title="Оценка «4»" htmlFor="star-4"></label>
-              <input
-                type="radio"
-                id="star-3"
-                name="rating"
-                value="3"
-                onChange={() => setGrade(3)}
-              />
-              <label htmlFor="star-3" title="Оценка «3»"></label>
-              <input
-                type="radio"
-                id="star-2"
-                name="rating"
-                value="2"
-                onChange={() => setGrade(2)}
-              />
-              <label htmlFor="star-2" title="Оценка «2»"></label>
-              <input
-                type="radio"
-                id="star-1"
-                name="rating"
-                value="1"
-                onChange={() => setGrade(1)}
-              />
-              <label htmlFor="star-1" title="Оценка «1»"></label>
+            <div className="product_page_overall_score">
+              <img src={star} alt="" />
+              <p className="product_page_rating_ball">
+                {sum ? sum.toFixed(2) : 0}
+              </p>
             </div>
-            <img
-              src={pointer}
-              alt="указатель"
-              className="product_page_rating_arrow"
-            />
-            <p className="product_page_rating_pointer"> Rate this book</p>
+            <div className="product_page_rating_with_pointer">
+              <div className="rating">
+                <input
+                  type="radio"
+                  id="star-5"
+                  name="rating"
+                  value="5"
+                  onChange={() => setGrade(5)}
+                />
+                <label title="Оценка «5»" htmlFor="star-5"></label>
+                <input
+                  type="radio"
+                  id="star-4"
+                  name="rating"
+                  value="4"
+                  onChange={() => setGrade(4)}
+                />
+                <label title="Оценка «4»" htmlFor="star-4"></label>
+                <input
+                  type="radio"
+                  id="star-3"
+                  name="rating"
+                  value="3"
+                  onChange={() => setGrade(3)}
+                />
+                <label htmlFor="star-3" title="Оценка «3»"></label>
+                <input
+                  type="radio"
+                  id="star-2"
+                  name="rating"
+                  value="2"
+                  onChange={() => setGrade(2)}
+                />
+                <label htmlFor="star-2" title="Оценка «2»"></label>
+                <input
+                  type="radio"
+                  id="star-1"
+                  name="rating"
+                  value="1"
+                  onChange={() => setGrade(1)}
+                />
+                <label htmlFor="star-1" title="Оценка «1»"></label>
+              </div>
+              <img
+                src={pointer}
+                alt="указатель"
+                className="product_page_rating_arrow"
+              />
+              <p className="product_page_rating_pointer"> Rate this book</p>
+            </div>
           </div>
-          <h3>Description</h3>
-          <p>{props.value.description}</p>
+          <div className="product_page_description_full">
+            <div className="product_page_description">
+              <h3>Description</h3>
+              <p>{props.value.description}</p>
+            </div>
+            <div className="product_page_buttons">
+              <div className="product_page_button_paperback">
+                <p>Paperback</p>
+                {Number(props.value.paperback_price) === 0 ? (
+                  <div className="product_page_paperback">Not available</div>
+                ) : (
+                  <div
+                    className={
+                      Number(props.value.paperback_price) === 0
+                        ? 'product_page_paperback'
+                        : 'product_page_hardcover'
+                    }
+                    onClick={() =>
+                      dispatch(
+                        thankaddInCart({
+                          userId: user[0].id,
+                          productId: props.value.id,
+                          name: props.value.name,
+                          autor: props.value.autor,
+                          cover: props.value.cover,
+                          price:
+                            Number(props.value.hardcover_price) === 0
+                              ? props.value.paperback_price
+                              : props.value.hardcover_price,
+                          quantity: 1,
+                        })
+                      )
+                    }
+                  >
+                    $ {props.value.paperback_price} USD
+                  </div>
+                )}
+              </div>
+              <div>
+                <p>Hardcover</p>
+                <div
+                  className={
+                    Number(props.value.hardcover_price) === 0
+                      ? 'product_page_paperback'
+                      : 'product_page_hardcover'
+                  }
+                  onClick={() =>
+                    dispatch(
+                      thankaddInCart({
+                        userId: user[0].id,
+                        productId: props.value.id,
+                        name: props.value.name,
+                        autor: props.value.autor,
+                        cover: props.value.cover,
+                        price:
+                          Number(props.value.hardcover_price) === 0
+                            ? props.value.paperback_price
+                            : props.value.hardcover_price,
+                        quantity: 1,
+                      })
+                    )
+                  }
+                >
+                  {Number(props.value.hardcover_price) === 0
+                    ? 'Not available'
+                    : `$ ${props.value.hardcover_price} USD`}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="product_page_description_mobail">
+          <div className="product_page_description">
+            <h3>Description</h3>
+            <p>{props.value.description}</p>
+          </div>
           <div className="product_page_buttons">
             <div className="product_page_button_paperback">
               <p>Paperback</p>

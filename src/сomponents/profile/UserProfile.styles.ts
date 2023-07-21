@@ -10,15 +10,19 @@ export const UserProfileStyle = styled.div`
         margin: 60px 0 110px 5%;
         animation: show 1s 1; 
         animation-fill-mode: forwards; 
-@keyframes show{
- 0%{ opacity:0; }
- 100% { opacity:1; }
-}
+        @keyframes show{
+        0%{ opacity:0; }
+        100% { opacity:1; }
+        }
         .userProfile{
                 margin: 0 0 0 10%;
                 width: 36%;
         }
-       
+       .UserProfile_photo{
+                position: relative;
+                width: 305px;
+                height: 305px
+       }
         .userProfile_information p{
                 display: flex;
                 align-items: center;
@@ -62,19 +66,19 @@ export const UserProfileStyle = styled.div`
         .UserProfile_photo_img{
                 border-radius: 16px;
                 display: flex;
-                width: 305px;
-                height: 305px;
+                width: 100%;
+                height: 100%;
                 object-fit: cover;
         }
         .UserProfile_photo_upload{
+                position: absolute;
                 background: #344966;
                 width: 48px;
                 height: 48px;
-                position: relative;
                 border-radius: 50%;
                 cursor: pointer;
-                bottom: 63px;
-                left: 236px;
+                bottom: 15px;
+                right: 15px;
                 
         }
         .photo_upload{
@@ -144,5 +148,56 @@ export const UserProfileStyle = styled.div`
                 background-color: #344966;
                 margin: 50px 0 0 0;
                 cursor: pointer;
+        }
+        @media (max-width: 835px){
+                .UserProfile_photo{
+                        width: 255px;
+                        height: 255px;
+                }
+                .userProfile {
+                        margin: 0 0 0 4%;
+                        width: 55%;
+                }
+                .userProfile_information h2 {
+                        font-size: 16px;
+                }
+                .userProfile_information_password h2 {
+                        font-size: 16px;
+                }
+                .userProfile_information p {
+                        font-size: 12px;
+                }
+                .userProfile_information_password p {
+                        font-size: 12px;
+                }
+        }
+        @media (max-width: 630px){
+                flex-direction: column;
+                align-items: center;
+                margin: 51px 2% 110px;
+                .userProfile {
+                        margin: 0;
+                        width: 90%;
+                }
+                .UserProfile_photo{
+                        width: 290px;
+                        height: 290px;
+                }
+                .userProfile_information {
+                        display: block;
+                }
+                .userProfile_information h2 {
+                        font-size: 14px;
+                }
+                .userProfile_information_password h2 {
+                        font-size: 14px;
+                }
+                .userProfile_information_input p {
+                        font-size: 12px;
+                }
+                .userProfile_information_input input {
+                        font-size: 14px;
+                
+                }
         }
 `

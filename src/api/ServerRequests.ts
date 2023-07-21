@@ -143,3 +143,23 @@ export const editorPasswordUser = (
 export const searchQuery = (query: string) => {
   return axios.post(`http://localhost:5000/api/search`, { query })
 }
+
+export const addInFavorites = ({ ...data }) => {
+  return axios.post('http://localhost:5000/api/addfavorites', { ...data })
+}
+
+export const getFavorites = (token: string) => {
+  return axios.post(
+    'http://localhost:5000/api/getfavorites',
+    {},
+    {
+      headers: {
+        Authorization: `Bearer: ${token}`,
+      },
+    }
+  )
+}
+
+export const deleteFromFavorites = (id: number) => {
+  return axios.delete(`http://localhost:5000/api/deletefavorites/${id}`)
+}

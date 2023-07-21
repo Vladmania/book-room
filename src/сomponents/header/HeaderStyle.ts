@@ -10,19 +10,18 @@ export const StyleHeader = styled.div`
         justify-content: space-between;
         align-items: center;
         margin: 24px 5% 0;
-    .header_search{
-        display: flex;
-        width: 55%;
-        align-items: center;
-    }
-    h3{
-        margin: 0 0 0 5%;
-        color:#000000;
+    
+    .header_catalog{
+        text-decoration: none;
+        color: #000;
+        transform: translateX(35px);
         font-size: 16px;
-        font-weight: bolder;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal;
         cursor: pointer;
     }
-    .header_search input{
+    .header_poisk input{
         background: #F0F4EF;
         border-radius: 16px;
         border: none;
@@ -35,7 +34,7 @@ export const StyleHeader = styled.div`
         line-height: 28px;
         color: #344966;
     }
-    .header_search input::placeholder {
+    .header_poisk input::placeholder {
         color: #B9BAC4;
         font-family: 'Poppins';
         font-style: normal;
@@ -60,7 +59,7 @@ export const StyleHeader = styled.div`
     .header_poisk{
         display: flex;
         align-items: center;
-        width: 100%;
+        width: 49%;
         border-radius: 16px;
         background: #F0F4EF;
     }
@@ -96,11 +95,28 @@ export const StyleHeader = styled.div`
     color: #344966;
     justify-content: center;
     }
+    @media (max-width: 1100px){
+        h3{
+            transform: none;
+        }
+    }
+    @media (max-width: 1039px) {
+    .header_button{
+        padding: 10px 35px;
+        
+    }
+    }
     @media (max-width: 944px) {
         margin: 24px 2% 0;
-        .header_poisk{
-            margin: 0 0 0 15%;
+    .header_button{
+        padding: 10px 35px;
     }
+    .header_poisk{
+        width: 31%;
+    }
+    .header_poisk img {
+    margin: 0 0 0 10%;
+}
     }
     @media (max-width: 630px) {
         .header_poisk{

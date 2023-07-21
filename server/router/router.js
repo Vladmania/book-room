@@ -5,6 +5,7 @@ const ProductControler = require('../controler/product_controler')
 const UserController = require('../controler/user_controler')
 const CartController = require('../controler/cart_controller')
 const ReviewsController = require('../controler/reviews_controller')
+const FavoritesController = require('../controler/favorite_controller')
 const MiddlewareVerify = require('../middleware/verifaiToken')
 
 router.post('/prod', ProductControler.addProduct)
@@ -36,5 +37,9 @@ router.post('/search', ProductControler.searchQuery)
 
 router.post('/addreviews', ReviewsController.addReviews)
 router.get('/getreviews/:idProduct', ReviewsController.getReviews)
+
+router.post('/addfavorites', FavoritesController.addProductInFavorite)
+router.post('/getfavorites', MiddlewareVerify.verifyToken,FavoritesController.getFavorite)
+router.delete('/deletefavorites/:id', FavoritesController.removeProductFromFavorites)
 
 module.exports = router

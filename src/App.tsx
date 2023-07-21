@@ -3,19 +3,23 @@ import { Header } from './сomponents/header/Header'
 import { HomePage } from './сomponents/Home page/HomePage'
 import { Footer } from './сomponents/footer/Footer'
 import { Cart } from './сomponents/cart/Cart'
+import { Favorites } from "./сomponents/favorites/Favorites"
 import { UserProfile } from './сomponents/profile/UserProfile'
 import { PagesProducts } from './сomponents/product page/PagesProducts'
 import { thankGetProductCart } from './store/Slice/CartSlice'
+import { thankGetProductFavorites } from './store/Slice/FavoriteSlice'
 import { useAppDispatch } from './store/Store'
 import { useEffect } from 'react'
-import { thankPostCheck } from './store/Slice/ProfilSlice'
+import { thankAuthorizationCheck } from './store/Slice/ProfilSlice'
 
 function App() {
   const dispatch = useAppDispatch()
+  
   useEffect(() => {
     const toket = localStorage.getItem('token')
     if (toket) {
-      dispatch(thankPostCheck(toket))
+      dispatch(thankAuthorizationCheck(toket))
+      dispatch(thankGetProductFavorites(toket))
       dispatch(thankGetProductCart(toket))
     }
   }, [dispatch])
@@ -27,6 +31,7 @@ function App() {
         <Routes>
           <Route path={'/'} element={<HomePage />} />
           <Route path={'/cart'} element={<Cart />} />
+          <Route path={'/favorites'} element={<Favorites />} />
           <Route path={'/profil'} element={<UserProfile />} />
           <Route path={'/product/:productId'} element={<PagesProducts />} />
         </Routes>

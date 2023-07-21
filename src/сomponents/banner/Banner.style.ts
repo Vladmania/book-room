@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import fairyimg from '../../pablic/atz1.png'
+import fairyfullimg from '../../pablic/atz12.png'
 import img from '../../pablic/unsplash_DgQf1dUKUTM.png'
 import imgMobail from '../../pablic/booksimg.png'
 
@@ -69,6 +70,7 @@ img{
     margin: 45px 2% 0;
     grid-column-start: span 4;
     height: 289px;
+    background-size: 45%;
     .banner_special_offer h2{
         font-size: 32px;
 }
@@ -85,12 +87,13 @@ img{
     top: -74px;
 }
 .banner_special_offer{
-    margin: 45px 0 0 10%;
+    margin: 45px 0 0 5%;
 }
    }
    @media (max-width: 700px) {
     background: url(${imgMobail}) no-repeat top 48px right;
     background-color: #F0F4EF;
+    background-size: 75%;
     display: flex;
     flex-direction: column;
     height: 505px;
@@ -185,6 +188,9 @@ img{
     }
 }
 @media (max-width: 700px) {
+    background: url(${fairyfullimg}) no-repeat top right;
+    background-size: 73%;
+    background-color: #F0F4EF;
     margin: 70px 2%;
     height: 570px;
     display: flex;
@@ -192,8 +198,8 @@ img{
     img{
         width: 282px;
         height: 250px;
-        bottom: -12px;
-        margin: auto;
+        bottom: -15px;
+        margin: 0 auto;
     }
     .banner_special_offer{
         margin: 0 0 78px 10%;
@@ -203,7 +209,12 @@ img{
     }
     .banner_special_offer p{
         width: 90%;
+        color: var(--dark, #0D1821);
+        font-family: Poppins;
         font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: normal
     }
     .banner_special_offer div{
         font-size: 16px;

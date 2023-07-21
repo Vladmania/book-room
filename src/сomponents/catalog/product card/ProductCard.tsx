@@ -3,10 +3,11 @@ import star from '../../../pablic/Starno.svg'
 import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '../../../store/Store'
 import { thankaddInCart } from '../../../store/Slice/CartSlice'
+import { thankDeleteProductFavorites, deleteProduct } from "../../../store/Slice/FavoriteSlice"
+import { thankaddInFavorites } from '../../../store/Slice/FavoriteSlice'
 import heart from '../../../pablic/Union.svg'
 import heartLike from '../../../pablic/Heart (1).svg'
 import starLike from '../../../pablic/Star.svg'
-import { useState } from 'react'
 
 interface ProductCard {
   id: number;
@@ -22,25 +23,44 @@ interface IProps {
 }
 
 export const ProductCard = (props: IProps) => {
-  const [flagLike, setFlagLike] = useState(false)
   const user = useAppSelector((state) => state.profil.profil)
   const cart = useAppSelector((state) => state.cart.product)
-  const qwe = cart.map((e) => e.productId)
+  const favorit = useAppSelector((state) => state.favorit.favorit)
+  const idProductinCart = cart.map((e) => e.productId)
+  const idProductinFavorit = favorit.map((e) => e.productId)
   const dispatch = useAppDispatch()
 
-  
+  const del = () =>{
+    dispatch(thankDeleteProductFavorites(props.value.id))
+    dispatch(deleteProduct(props.value.id))
+}
 
   return (
     <ProductCardStyle key={props.value.id}>
       <div
         className="product_page_favorites"
-        onClick={() => setFlagLike(flagLike ? false : true)}
-      >
-        <img
-          src={flagLike ? heartLike : heart}
-          alt=""
-          onClick={() => setFlagLike(flagLike ? false : true)}
-        />
+      >{idProductinFavorit.includes(props.value.id) ?<img
+        src={heartLike}
+        alt=""
+        onClick={()=> del()}
+      />: <img
+      src={heart}
+      alt=""
+      onClick={() => dispatch(
+        thankaddInFavorites({
+          userId: user[0].id,
+          productId: props.value.id,
+          name: props.value.name,
+          autor: props.value.autor,
+          cover: props.value.cover,
+          price:
+            Number(props.value.hardcover_price) === 0
+              ? props.value.paperback_price
+              : props.value.hardcover_price,
+        })
+      )
+    }
+    />}
       </div>
       <div className="product_card_cover">
         <Link to={'/product/' + props.value.id}>
@@ -77,7 +97,7 @@ export const ProductCard = (props: IProps) => {
         />
         <p>{props.value.rating}</p>
       </div>
-      {qwe.includes(props.value.id) ? (
+      {idProductinCart.includes(props.value.id) ? (
         <div className="if_product_cart">Added to cart</div>
       ) : (
         <div
