@@ -8,13 +8,13 @@ import { UserProfile } from './сomponents/profile/UserProfile'
 import { PagesProducts } from './сomponents/product page/PagesProducts'
 import { thankGetProductCart } from './store/Slice/CartSlice'
 import { thankGetProductFavorites } from './store/Slice/FavoriteSlice'
-import { useAppDispatch } from './store/Store'
+import { useAppDispatch, useAppSelector } from './store/Store'
 import { useEffect } from 'react'
 import { thankAuthorizationCheck } from './store/Slice/ProfilSlice'
 
 function App() {
   const dispatch = useAppDispatch()
-  
+ 
   useEffect(() => {
     const toket = localStorage.getItem('token')
     if (toket) {

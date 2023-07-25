@@ -16,7 +16,8 @@ router.post('/changerating', ProductControler.changeRating)
 
 router.post('/registration', UserController.registration)
 router.post('/login', UserController.login)
-router.post('/check',MiddlewareVerify.verifyToken,UserController.checkUser)
+router.post('/refresh', UserController.refreshToken)
+router.post('/check',MiddlewareVerify.chekUserToken,UserController.checkUser)
 router.put(
   '/editoruserphoto',
   fileMiddleware.single('avatar'),

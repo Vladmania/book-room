@@ -26,7 +26,7 @@ export const postLogin = (email: string, password: string) => {
 export const getCheck = (token: string ) => {
   return axios.post(
     'http://localhost:5000/api/check',
-    { token },
+    {},
     {
       headers: {
         Authorization: `Bearer: ${token}`,
@@ -34,7 +34,17 @@ export const getCheck = (token: string ) => {
     }
   )
 }
-
+export const refresh = (refreshToken: string ) => {
+  return axios.post(
+    'http://localhost:5000/api/refresh',
+    {},
+    {
+      headers: {
+        Authorization: `Bearer: ${refreshToken}`,
+      },
+    }
+  )
+}
 export const addInCart = ({ ...data }) => {
   return axios.post('http://localhost:5000/api/addcart', { ...data })
 }

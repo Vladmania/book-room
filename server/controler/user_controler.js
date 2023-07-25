@@ -3,10 +3,12 @@ const { DataTypes } = require('sequelize')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const validator = require('validator')
+const userServis = require('../servis/user_servis')
 const { secret } = require('./config')
 const { tokenLifetime } = require('./config')
+const { refreshTokenLifetime } = require('./config')
 
-const User = ConnectSequelize.define('UserProfils', {
+const User = ConnectSequelize.define('Account', {
   email: {
     type: DataTypes.TEXT,
     allowNull: false,
@@ -27,6 +29,10 @@ const User = ConnectSequelize.define('UserProfils', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
+  refreshToken: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
   createdAt: {
     type: DataTypes.DATE,
     allowNull: false,
@@ -36,14 +42,6 @@ const User = ConnectSequelize.define('UserProfils', {
     allowNull: false,
   },
 })
-
-const generetToken = (userId, email) => {
-  const payload = {
-    userId,
-    email,
-  }
-  return jwt.sign(payload, secret, { expiresIn: tokenLifetime })
-}
 
 class UserController {
   async registration(req, res) {
@@ -62,12 +60,14 @@ class UserController {
             name: '',
             photo: '',
             token: '',
+            refreshToken: '',
           })
-          const userprofil = await User.findAll({
+          const userprofil = await User.findOne({
             where: { email: email, password: passwordHash },
           })
-
-          res.json(userprofil)
+           userServis.generirToken(userprofil)
+          await userprofil.save()
+          res.json([userprofil])
         }
       } else res.json('Email invalid')
     } catch (e) {
@@ -85,9 +85,9 @@ class UserController {
         if (!validPassword) {
           res.json('Invalid password')
         } else {
-          const token = generetToken(userprofil.id, userprofil.email)
-          userprofil.token = token
+          userServis.generirToken(userprofil)
           await userprofil.save()
+          console.log(userprofil);
           res.json([userprofil])
         }
       }
@@ -104,7 +104,19 @@ class UserController {
       console.log(e)
     }
   }
-
+  async refreshToken(req, res) {
+    try {
+      const token = req.headers.authorization.split(' ')[1]
+      const decoded = jwt.decode(token, secret)
+      const userprofil = await User.findOne({ where: { id: decoded.userId } })
+      jwt.verify(userprofil.refreshToken, secret)
+      userServis.generirToken(userprofil)
+      await userprofil.save()
+      res.json([userprofil])
+    } catch (e) {
+      console.log(e)
+    }
+  }
   async editorPhotoUser(req, res) {
     if (req.file) {
       const { id } = req.body

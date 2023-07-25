@@ -7,6 +7,7 @@ import {
   putEditorAvatar,
   editorDataUser,
   editorPasswordUser,
+  refresh,
 } from '../../api/ServerRequests'
 
 interface IUserProfil {
@@ -184,7 +185,11 @@ export const thankAuthorizationCheck = createAsyncThunk<IUserProfil[], string>(
   async (token) => {
     try {
       const response = await getCheck(token)
-      return response.data
+      if(response.data === 'token is not alive'){
+        const newResponse = await refresh(token)
+        localStorage.setItem('token', newResponse.data[0].token)
+        return newResponse.data
+      }else{return response.data }
     } catch (e) {
       console.log(e)
     }
@@ -196,7 +201,7 @@ export const thankPutPhoto = createAsyncThunk<IUserProfil[], FormData>(
   async (data) => {
     try {
       const response = await putEditorAvatar(data)
-      return response.data
+      return response.data 
     } catch (e) {
       console.log(e)
     }
