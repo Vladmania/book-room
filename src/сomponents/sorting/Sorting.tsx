@@ -1,7 +1,6 @@
 import { SortingStyle } from './SortingStyle'
 import { useState , useEffect } from 'react'
 import { GenrePanel } from './GenrePanel'
-import { Link } from 'react-router-dom'
 import back from '../../pablic/Forward.svg'
 import { useAppDispatch, useAppSelector } from '../../store/Store'
 import {

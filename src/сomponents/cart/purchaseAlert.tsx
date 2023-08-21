@@ -1,6 +1,6 @@
 import { PurchaseAlertStyle } from './PurchaseAlert.styles'
-import { thankShoppingProduct, modalSuccessfulPurchase } from "../../store/Slice/CartSlice";
-import { useAppDispatch, useAppSelector } from "../../store/Store";
+import { modalSuccessfulPurchase } from "../../store/Slice/CartSlice";
+import { useAppDispatch} from "../../store/Store";
 import close from "../../pablic/Close.png";
 
 
