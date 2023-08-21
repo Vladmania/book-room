@@ -77,6 +77,15 @@ class CartController {
   
   res.json(remoteProduct)
   }
+  async shoppingProduct(req, res){
+    try{
+      const shoppingProductFromCart = await ProductInCart.truncate();
+      
+      res.json(shoppingProductFromCart)
+    }catch(e){
+      console.log(e);
+    }
+  }
   async changeTheQuantityInTheCart(req, res){
     const {id, quantity} = req.body
     const changeProduct = await ProductInCart.findOne({

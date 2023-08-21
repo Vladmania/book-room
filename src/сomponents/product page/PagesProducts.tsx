@@ -1,15 +1,21 @@
-import { ProductPage } from "./ProductPage"
-import { useAppSelector } from '../../store/Store'
-import { useParams } from 'react-router-dom';
+import { ProductPage } from './ProductPage'
+import { useAppSelector, useAppDispatch } from '../../store/Store'
+import { thankgetOneProduct } from '../../store/Slice/ProductSlice'
+import { useParams } from 'react-router-dom'
+import { useEffect } from 'react'
 
-export const PagesProducts = () =>{
-    const product = useAppSelector((state) => state.product.product)
-    const param = useParams()
-    
-    const addproduct = product.map(e => e.id === Number(param.productId) ? 
-    <ProductPage value={e}/> : null)
-           
-    return(
-        <>{addproduct}</>
-    )
+export const PagesProducts = () => {
+  const product = useAppSelector((state) => state.product.product)
+  const dispatch = useAppDispatch()
+  const param = useParams()
+
+  useEffect(() => {
+    dispatch(thankgetOneProduct(Number(param.productId)))
+  }, [dispatch])
+
+  const addproduct = product.map((e) =>
+    e.id === Number(param.productId) ? <ProductPage value={e} /> : null
+  )
+
+  return <>{addproduct}</>
 }

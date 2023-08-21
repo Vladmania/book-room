@@ -1,13 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import {
   getProduct,
-  sortProduct,
   changeRating,
   getOneProduct,
   searchQuery,
 } from '../../api/ServerRequests'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { sortProductPrice } from '../../api/ServerRequests'
+
 
 export interface ProductCard {
   id: number;
@@ -24,6 +23,13 @@ export interface ProductCard {
   genre: string;
 }
 
+interface ISortProduct{
+  currentPage: number, 
+  genre: string | null, 
+  minPrice: number | null | string, 
+  maxPrice: number | null | string,
+  sort: string | null
+}
 
 export interface IInitialState {
   product: ProductCard[];
@@ -81,31 +87,15 @@ export const productSlice = createSlice({
       state.error = true
       state.loading = false
     })
-    builder.addCase(thankSortPrice.pending, (state) => {
+    builder.addCase(thankgetOneProduct.pending, (state, actions) => {
       state.loading = true
     })
-    builder.addCase(thankSortPrice.fulfilled, (state, actions) => {
-      state.product = actions.payload
-      state.loading = false
-    })
-    builder.addCase(thankSortPrice.rejected, (state) => {
-      state.error = true
-      state.loading = false
-    })
-    builder.addCase(thankSortProduct.pending, (state) => {
-      state.loading = true
-    })
-    builder.addCase(thankSortProduct.fulfilled, (state, actions) => {
-      state.product = actions.payload
-      state.loading = false
-    })
-    builder.addCase(thankSortProduct.rejected, (state) => {
-      state.error = true
-      state.loading = false
-    })
-
     builder.addCase(thankgetOneProduct.fulfilled, (state, actions) => {
-      state.productPage = actions.payload
+      state.product = actions.payload
+      state.loading = false
+    })
+    builder.addCase(thankgetOneProduct.rejected, (state, actions) => {
+      state.error = true
       state.loading = false
     })
     builder.addCase(thanksearchQuery.pending, (state) => {
@@ -125,11 +115,11 @@ export const productSlice = createSlice({
 export const { addProduct, setTotalProductCount, flipThePage, setMaxPrice } =
   productSlice.actions
 
-export const thankGetProduct = createAsyncThunk<ProductCard[], number>(
+export const thankGetProduct = createAsyncThunk<ProductCard[], ISortProduct>(
   'product/thankGetProduct',
-  async (currentPage, { dispatch }) => {
+  async ({currentPage, genre, minPrice, maxPrice, sort}, { dispatch }) => {
     try {
-      const respons = await getProduct(currentPage)
+      const respons = await getProduct(currentPage, genre, minPrice, maxPrice, sort)
       dispatch(flipThePage(currentPage))
       dispatch(setTotalProductCount(respons.data.totalProductCount))
       dispatch(setMaxPrice(respons.data.maxPrice))
@@ -139,30 +129,6 @@ export const thankGetProduct = createAsyncThunk<ProductCard[], number>(
     }
   }
 )
-
-export const thankSortPrice = createAsyncThunk<
-  ProductCard[],
-  { minPrice: number, maxPrice: number }
->('product/thankSortPrice', async ({ minPrice, maxPrice }) => {
-  try {
-    const respons = await sortProductPrice(minPrice, maxPrice)
-    return respons.data
-  } catch (e) {
-    console.log(e)
-  }
-})
-
-export const thankSortProduct = createAsyncThunk<
-  ProductCard[],
-  { sort: string, currentPage: number }
->('product/thankSortProduct', async ({ sort, currentPage }) => {
-  try {
-    const respons = await sortProduct(sort, currentPage)
-    return respons.data
-  } catch (e) {
-    console.log(e)
-  }
-})
 
 export const thankchangeRating = createAsyncThunk<
   ProductCard[],

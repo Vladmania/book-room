@@ -1,102 +1,91 @@
-import axios from 'axios'
+import axios from "axios";
 
-export const getProduct = (currentPage: number) => {
+export const getProduct = (
+  currentPage: number,
+  genre: string | null,
+  minPrice: number | null | string,
+  maxPrice: number | null | string,
+  sort: string | null
+) => {
   return axios.get(
-    `http://localhost:5000/api/product?count=12&page=${currentPage}`
-  )
-}
+    `http://localhost:5000/api/product?count=12&page=${currentPage}&genre=${genre}&minPrice=${minPrice}&maxPrice=${maxPrice}&sort=${sort}`
+  );
+};
 
 export const getOneProduct = (id: number) => {
-  return axios.get(
-    `http://localhost:5000/api/oneproduct?id=${id}`
-  )
-}
+  return axios.get(`http://localhost:5000/api/oneproduct?id=${id}`);
+};
 
 export const postRegistrtion = (email: string, password: string) => {
-  return axios.post('http://localhost:5000/api/registration', {
+  return axios.post("http://localhost:5000/api/registration", {
     email,
     password,
-  })
-}
+  });
+};
+
+export const shoppingProduct = () => {
+  return axios.delete(`http://localhost:5000/api/shopping`);
+};
+
 
 export const postLogin = (email: string, password: string) => {
-  return axios.post('http://localhost:5000/api/login', { email, password })
-}
+  return axios.post("http://localhost:5000/api/login", { email, password });
+};
 
-export const getCheck = (token: string ) => {
+export const getCheck = (token: string) => {
   return axios.post(
-    'http://localhost:5000/api/check',
+    "http://localhost:5000/api/check",
     {},
     {
       headers: {
         Authorization: `Bearer: ${token}`,
       },
     }
-  )
-}
-export const refresh = (refreshToken: string ) => {
+  );
+};
+export const refresh = (refreshToken: string) => {
   return axios.post(
-    'http://localhost:5000/api/refresh',
+    "http://localhost:5000/api/refresh",
     {},
     {
       headers: {
         Authorization: `Bearer: ${refreshToken}`,
       },
     }
-  )
-}
+  );
+};
 export const addInCart = ({ ...data }) => {
-  return axios.post('http://localhost:5000/api/addcart', { ...data })
-}
+  return axios.post("http://localhost:5000/api/addcart", { ...data });
+};
 
 export const getCart = (token: string) => {
   return axios.post(
-    'http://localhost:5000/api/getcart',
+    "http://localhost:5000/api/getcart",
     {},
     {
       headers: {
         Authorization: `Bearer: ${token}`,
       },
     }
-  )
-}
+  );
+};
 
 export const deleteFromCart = (id: number) => {
-  return axios.delete(`http://localhost:5000/api/delete/${id}`)
-}
-
-export const sortProductGenre = (genre: string, currentPage: number) => {
-  return axios.post(
-    `http://localhost:5000/api/sortgenre?count=12&page=${currentPage}`,
-    { genre }
-  )
-}
-
-export const sortProductPrice = (minPrice: number, maxPrice: number) => {
-  return axios.post(`http://localhost:5000/api/sortprice`, {
-    minPrice,
-    maxPrice,
-  })
-}
+  return axios.delete(`http://localhost:5000/api/delete/${id}`);
+};
 
 export const editCartQuantity = (id: number, quantity: number) => {
-  return axios.put(`http://localhost:5000/api/editcart`, { id, quantity })
-}
+  return axios.put(`http://localhost:5000/api/editcart`, { id, quantity });
+};
 
-export const sortProduct = (sort: string, currentPage: number) => {
-  return axios.post(
-    `http://localhost:5000/api/sortproduct?count=12&page=${currentPage}`,
-    { sort }
-  )
-}
 //Редактирование аватарки
 export const putEditorAvatar = (data: FormData) => {
   return axios.put(`http://localhost:5000/api/editoruserphoto`, data, {
     headers: {
-      'Content-Type': 'multipart/form-data',
+      "Content-Type": "multipart/form-data",
     },
-  })
-}
+  });
+};
 
 export const addReviews = (
   prductId: number,
@@ -111,16 +100,16 @@ export const addReviews = (
     avatar,
     feedback,
     rating,
-  })
-}
+  });
+};
 
 export const getReviews = (idProduct: number) => {
-  return axios.get(`http://localhost:5000/api/getreviews/${idProduct}`)
-}
+  return axios.get(`http://localhost:5000/api/getreviews/${idProduct}`);
+};
 
 export const changeRating = (id: number, rating: number) => {
-  return axios.post(`http://localhost:5000/api/changerating`, { id, rating })
-}
+  return axios.post(`http://localhost:5000/api/changerating`, { id, rating });
+};
 
 export const editorDataUser = (token: string, name: string, email: string) => {
   return axios.put(
@@ -131,8 +120,8 @@ export const editorDataUser = (token: string, name: string, email: string) => {
         Authorization: `Bearer: ${token}`,
       },
     }
-  )
-}
+  );
+};
 
 export const editorPasswordUser = (
   token: string,
@@ -147,29 +136,29 @@ export const editorPasswordUser = (
         Authorization: `Bearer: ${token}`,
       },
     }
-  )
-}
+  );
+};
 
 export const searchQuery = (query: string) => {
-  return axios.post(`http://localhost:5000/api/search`, { query })
-}
+  return axios.post(`http://localhost:5000/api/search`, { query });
+};
 
 export const addInFavorites = ({ ...data }) => {
-  return axios.post('http://localhost:5000/api/addfavorites', { ...data })
-}
+  return axios.post("http://localhost:5000/api/addfavorites", { ...data });
+};
 
 export const getFavorites = (token: string) => {
   return axios.post(
-    'http://localhost:5000/api/getfavorites',
+    "http://localhost:5000/api/getfavorites",
     {},
     {
       headers: {
         Authorization: `Bearer: ${token}`,
       },
     }
-  )
-}
+  );
+};
 
 export const deleteFromFavorites = (id: number) => {
-  return axios.delete(`http://localhost:5000/api/deletefavorites/${id}`)
-}
+  return axios.delete(`http://localhost:5000/api/deletefavorites/${id}`);
+};

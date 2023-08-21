@@ -1,5 +1,6 @@
 const ConnectSequelize = require('../middleware/databaseСonnection')
 const { DataTypes } = require('sequelize')
+const { Op } = require("sequelize");
 
 const Product = ConnectSequelize.define(
   'Products',
@@ -102,22 +103,115 @@ class ProductControler {
     })
   }
   async getProducts(req, res) {
-    const prod = await Product.findAll()
-    const { count, page } = req.query
-    const allPrice = prod.map(
-      (e) => Number(e.hardcover_price) || Number(e.paperback_price)
-    )
-    const maxPrice = allPrice.reduce((a, b) => (a > b ? a : b))
-    const dprod = prod.slice(page * count, Number(count) * (Number(page) + 1))
-    res.json({
-      items: dprod.length === 0 ? prod : dprod,
-      totalProductCount: prod.length,
-      maxPrice,
-    })
+    try {
+      const product = await Product.findAll()
+      const { count, page, genre, minPrice, maxPrice, sort } = req.query
+      console.log(count, page, genre, minPrice, maxPrice, sort );
+      let array = []
+      if(genre && minPrice && maxPrice){
+        if(genre === "Business and finance"){
+          const sortProd = await Product.findAll({
+            where: {
+              genre: "Business & finance",
+              hardcover_price: {
+                [Op.gte]: minPrice,
+                [Op.lte]: maxPrice 
+              },
+            },
+          })
+          array = sortProd
+        }else{
+          const sortProd = await Product.findAll({
+            where: {
+              genre,
+              hardcover_price: {
+                [Op.gte]: minPrice,
+                [Op.lte]: maxPrice 
+              },
+            },
+          })
+          array = sortProd
+        }
+      }else if(minPrice !== '0' || maxPrice !== '0'){
+        const sortPrise = await Product.findAll({
+          where: {
+            hardcover_price: {
+              [Op.gte]: minPrice,
+              [Op.lte]: maxPrice 
+            },
+          },
+        })
+        array = sortPrise
+      }else(
+        array = product
+      )
+      if(sort){
+        console.log(sort);
+        if (sort === 'Price') {
+          const sortProductPrice = array.sort(
+            (a, b) => a.hardcover_price - b.hardcover_price
+          )
+          array = sortProductPrice
+        }else if(sort === 'oppositePrice'){
+          const sortProductPrice = array.sort(
+            (a, b) => b.hardcover_price - a.hardcover_price
+          )
+          array = sortProductPrice
+        } else if (sort === 'Name') {
+          const sortProductName = array.sort(function (a, b) {
+            if (a.name > b.name) {
+              return 1
+            }
+            if (a.name < b.name) {
+              return -1
+            }
+            return 0
+          })
+          array = sortProductName
+        } else if (sort === 'Author name') {
+          const sortProductAuthorName = array.sort(function (a, b) {
+            if (a.autor > b.autor) {
+              return 1
+            }
+            if (a.autor < b.autor) {
+              return -1
+            }
+            return 0
+          })
+          array = sortProductAuthorName
+        } else if (sort === 'Rating') {
+          const sortProductRating = array.sort(function (a, b) {
+            if (a.rating < b.rating) {
+              return 1
+            }
+            if (a.rating > b.rating) {
+              return -1
+            }
+            return 0
+          })
+          array = sortProductRating
+        } else if (sort === 'Date of issue') {
+          const sortProductDateOfIssue = array.sort(
+            (a, b) => a.createdAt - b.createdAt
+          )
+          array = sortProductDateOfIssue
+        }
+      }
+      const allPrice = product
+        .map((e) => Number(e.hardcover_price) || Number(e.paperback_price))
+        let t = allPrice.reduce((a, b) => (a > b ? a : b))
+      const dprod = array.slice(page * count, Number(count) * (Number(page) + 1))
+      res.json({
+        items: dprod.length === 0 ? array : dprod,
+        totalProductCount: array.length,
+        maxPrice: t,
+      })
+    } catch (e) {
+      console.log(e)
+    }
   }
   async getOneProduct(req, res) {
-    const {id} = req.query
-    console.log(req.query);
+    const { id } = req.query
     const oneProduct = await Product.findOne({
       where: {
         id,
@@ -135,30 +229,6 @@ class ProductControler {
     })
 
     res.json(remoteProduct)
-  }
-  async sortGenr(req, res) {
-    const { genre } = req.body
-    const { count, page } = req.query
-    const sortProduct = await Product.findAll({
-      where: {
-        genre,
-      },
-    })
-    const pagesProduct = sortProduct.slice(
-      page * count,
-      Number(count) * (Number(page) + 1)
-    )
-    const sortGanre = pagesProduct.length === 0 ? pagesProduct : sortProduct
-    res.json(sortGanre)
-  }
-  async sortPrice(req, res) {
-    const { minPrice, maxPrice } = req.body
-    const Products = await Product.findAll()
-    const sortProductPriceHardcover = Products.filter(
-      (prod) =>
-        prod.hardcover_price >= minPrice && prod.hardcover_price <= maxPrice
-    )
-    res.json(sortProductPriceHardcover)
   }
   async sortProduct(req, res) {
     const { sort } = req.body
@@ -212,8 +282,7 @@ class ProductControler {
           return -1
         }
         return 0
-      }
-      )
+      })
       const paginalСonclusion = sortProductPriceHardcover.slice(
         page * count,
         Number(count) * (Number(page) + 1)
@@ -233,7 +302,7 @@ class ProductControler {
   async changeRating(req, res) {
     const { id, rating } = req.body
     const changeProduct = await Product.findOne({
-      where: { id }
+      where: { id },
     })
     changeProduct.rating = rating
     await changeProduct.save()
@@ -242,12 +311,13 @@ class ProductControler {
   async searchQuery(req, res) {
     const { query } = req.body
     let q = query
-    console.log(String(q));
+    console.log(String(q))
     const changeProduct = await Product.findAll()
-    const respons = changeProduct.filter(item => item.name.toLowerCase().includes(query.toLowerCase()))
+    const respons = changeProduct.filter((item) =>
+      item.name.toLowerCase().includes(query.toLowerCase())
+    )
     res.json(respons)
   }
 }
-
 
 module.exports = new ProductControler()

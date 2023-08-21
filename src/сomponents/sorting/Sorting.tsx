@@ -1,53 +1,89 @@
 import { SortingStyle } from './SortingStyle'
-import { useState } from 'react'
+import { useState , useEffect } from 'react'
 import { GenrePanel } from './GenrePanel'
+import { Link } from 'react-router-dom'
 import back from '../../pablic/Forward.svg'
 import { useAppDispatch, useAppSelector } from '../../store/Store'
 import {
-  thankSortPrice,
-  thankSortProduct,
+  thankGetProduct,
 } from '../../store/Slice/ProductSlice'
+import {
+  minStateSlider,
+  maxStateSlider,
+  SwitchSortGanreOn,
+} from '../../store/Slice/SortingSlice'
 import Nouislider from 'nouislider-react'
 import 'nouislider/distribute/nouislider.css'
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export const Sorting = () => {
   const [flagPrice, setFlagPrice] = useState(Boolean)
   const [flagGenre, setFlagGenre] = useState(Boolean)
   const [flagSort, setFlagSort] = useState(Boolean)
+  const [minMaxFlag, setMinMaxFlag] = useState(Boolean)
   const [priceMin, setPriceMin] = useState(Number)
   const [priceMax, setPriceMax] = useState(Number)
+  const [sorting, setSorting] = useState(String)
   const allGenre = useAppSelector((state) => state.sorting.genres)
+  const onGenre = useAppSelector((state) => state.sorting.onGenre)
+  const minPrice = useAppSelector((state) => state.sorting.sliderMin)
+  const maxPrice = useAppSelector((state) => state.sorting.sliderMax)
   const pricemax = useAppSelector((state) => state.product.maxPrice)
   const currentPage = useAppSelector((state) => state.product.currentPage)
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const dispatch = useAppDispatch()
+   
+  if(maxPrice === 0){
+    dispatch(maxStateSlider(pricemax))
+  }
+
+  useEffect(()=>{
+    dispatch(SwitchSortGanreOn(searchParams.get("genre") ?? onGenre));
+    dispatch(minStateSlider(searchParams.get("minprice") ?? minPrice))
+    dispatch(maxStateSlider(searchParams.get("maxprice") ?? maxPrice))  
+  }, [])
 
   const onCheng = (render: number[], handle: number, value: number[]) => {
     dispatch(
-      thankSortPrice({
+      thankGetProduct({
+        genre: onGenre,
         minPrice: Number(value[0].toFixed(2)),
         maxPrice: Number(value[1].toFixed(2)),
+        currentPage,
+        sort: ""
       })
     )
+    dispatch(minStateSlider(Number(value[0].toFixed(2))))
+    dispatch(maxStateSlider(Number(value[1].toFixed(2))))
   }
+
   const onUpdate = (render: number[], handle: number, value: number[]) => {
     setPriceMin(Number(value[0].toFixed(2)))
     setPriceMax(Number(value[1].toFixed(2)))
   }
 
-  const genres = allGenre.map((e) => (
-    <GenrePanel genre={e.genre} switch={e.switch} />
-  ))
-  const slider = (
-    <Nouislider
-      range={{ min: 0, max: pricemax }}
-      start={[0, pricemax]}
-      onChange={onCheng}
-      onUpdate={onUpdate}
-      connect
-    />
-  )
+  const sortProduct = (sort: string) =>{
+    setSorting(sort)
+    dispatch(
+    thankGetProduct({
+      genre: onGenre,
+      minPrice: minPrice,
+      maxPrice: maxPrice,
+      currentPage,
+      sort
+    })
+    )
+    navigate({
+      search: `genre=${onGenre}&minprice=${minPrice}&maxprice=${maxPrice}&sort=${sort}`
+    })
+  }
 
-  const togglePrice = () => {
+  const genres = allGenre.map((e) => (
+    <GenrePanel genre={e.genre} switch={e.switch} sorting={sorting}/>
+  ))
+
+  const toggleWindow = () => {
     setFlagPrice(flagPrice ? false : true)
     setFlagGenre(flagGenre ? false : false)
     setFlagSort(flagSort ? false : false)
@@ -83,7 +119,7 @@ export const Sorting = () => {
         <div className="sort_button">
           <div
             className="sort_categories_element"
-            onClick={() => togglePrice()}
+            onClick={() => toggleWindow()}
           >
             Price
             <img src={back} alt="" className={flagPrice ? 'open' : 'close'} />
@@ -91,7 +127,16 @@ export const Sorting = () => {
 
           {flagPrice ? (
             <div className="sort_price_regulator">
-              {slider}
+              <Nouislider
+                range={{ min: 0, max: pricemax }}
+                start={[minPrice, maxPrice]}
+                onChange={onCheng}
+                onUpdate={onUpdate}
+                connect
+                onEnd={(e)=> navigate({
+                  search: `genre=${onGenre}&minprice=${e[0]}&maxprice=${e[1]}&sort=${sorting}`
+                })}
+              />
               <div className="sort_price">
                 <p>$ {priceMin}</p>
                 <p>$ {priceMax}</p>
@@ -106,41 +151,37 @@ export const Sorting = () => {
           </div>
           {flagSort ? (
             <div className="sort_product">
-              <p
-                onClick={() =>
-                  dispatch(thankSortProduct({ sort: 'Price', currentPage }))
-                }
-              >
-                Price
+              <p onClick={() =>{
+                  setMinMaxFlag(minMaxFlag ? false : true)
+                  minMaxFlag ? sortProduct('Price') : sortProduct('oppositePrice')
+              }
+                }>
+                Price   
               </p>
               <p
-                onClick={() =>
-                  dispatch(thankSortProduct({ sort: 'Name', currentPage }))
+                onClick={() => 
+                  sortProduct('Name')
                 }
               >
                 Name
               </p>
               <p
                 onClick={() =>
-                  dispatch(
-                    thankSortProduct({ sort: 'Author name', currentPage })
-                  )
+                  sortProduct('Author name')
                 }
               >
                 Author name
               </p>
               <p
                 onClick={() =>
-                  dispatch(thankSortProduct({ sort: 'Rating', currentPage }))
+                  sortProduct('Rating')
                 }
               >
                 Rating
               </p>
               <p
                 onClick={() =>
-                  dispatch(
-                    thankSortProduct({ sort: 'Date of issue', currentPage })
-                  )
+                  sortProduct('Date of issue')
                 }
               >
                 Date of issue
