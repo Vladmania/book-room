@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { SortingStyle } from './SortingStyle'
 import { useState , useEffect } from 'react'
 import { GenrePanel } from './GenrePanel'
@@ -32,17 +33,13 @@ export const Sorting = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch()
-   
-  if(maxPrice === 0){
-    dispatch(maxStateSlider(pricemax))
-  }
 
   useEffect(()=>{
     dispatch(SwitchSortGanreOn(searchParams.get("genre") ?? onGenre));
     dispatch(minStateSlider(searchParams.get("minprice") ?? minPrice))
     dispatch(maxStateSlider(searchParams.get("maxprice") ?? maxPrice))  
   }, [])
-
+  
   const onCheng = (render: number[], handle: number, value: number[]) => {
     dispatch(
       thankGetProduct({
@@ -79,7 +76,7 @@ export const Sorting = () => {
   }
 
   const genres = allGenre.map((e) => (
-    <GenrePanel genre={e.genre} switch={e.switch} sorting={sorting}/>
+    <GenrePanel genre={e.genre} switch={e.switch} sorting={sorting} key={e.id}/>
   ))
 
   const toggleWindow = () => {
@@ -128,7 +125,7 @@ export const Sorting = () => {
             <div className="sort_price_regulator">
               <Nouislider
                 range={{ min: 0, max: pricemax }}
-                start={[minPrice, maxPrice]}
+                start={[minPrice, maxPrice ? maxPrice : pricemax]}
                 onChange={onCheng}
                 onUpdate={onUpdate}
                 connect

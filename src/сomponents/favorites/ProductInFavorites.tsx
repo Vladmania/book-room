@@ -18,6 +18,8 @@ interface IProductInFavorit {
 export const ProductInFavorites = (props: IProductInFavorit) => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.profil.profil);
+  const cart = useAppSelector((state) => state.cart.product);
+  const idProductinCart = cart.map((e) => e.productId);
 
   const del = () => {
     dispatch(thankDeleteProductFavorites(props.productId));
@@ -30,6 +32,8 @@ export const ProductInFavorites = (props: IProductInFavorit) => {
         <h2>{props.name}</h2>
         <p>{props.autor}</p>
         <div className="ProductInFavorit_addart_and_delete">
+        {idProductinCart.includes(props.productId) ? 
+        <div className="if_product_cart">Added to cart</div> :
           <div
             className="ProductInFavorit_addcart"
             onClick={() =>
@@ -47,7 +51,7 @@ export const ProductInFavorites = (props: IProductInFavorit) => {
             }
           >
             Add to cart
-          </div>
+          </div>}
           <img
             src={imgdelete}
             alt=""

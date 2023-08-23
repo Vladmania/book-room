@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IGenre {
+  id: number;
   switch: boolean;
   genre: string;
 }
@@ -17,15 +18,15 @@ interface IInitialState {
 
 const initialState: IInitialState = {
   genres: [
-    { switch: false, genre: "Non-fiction" },
-    { switch: false, genre: `Business and finance` },
-    { switch: false, genre: "Politics" },
-    { switch: false, genre: "Travel books" },
-    { switch: false, genre: "Romance" },
-    { switch: false, genre: "Satire" },
-    { switch: false, genre: "Horror" },
-    { switch: false, genre: "Children’s books" },
-    { switch: false, genre: "Fantasy" },
+    {id: 1, switch: false, genre: "Non-fiction" },
+    {id: 2, switch: false, genre: `Business and finance` },
+    {id: 3, switch: false, genre: "Politics" },
+    {id: 4,switch: false, genre: "Travel books" },
+    {id: 5, switch: false, genre: "Romance" },
+    {id: 6, switch: false, genre: "Satire" },
+    {id: 7, switch: false, genre: "Horror" },
+    {id: 8, switch: false, genre: "Children’s books" },
+    {id: 9, switch: false, genre: "Fantasy" },
   ],
   onGenre: "",
   sliderMin: 0,

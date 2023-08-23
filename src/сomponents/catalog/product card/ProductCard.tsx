@@ -27,7 +27,7 @@ interface IProps {
   value: ProductCard;
 }
 
-export const ProductCard = (props: IProps) => {
+export const ProductCards = (props: IProps) => {
   const user = useAppSelector((state) => state.profil.profil);
   const cart = useAppSelector((state) => state.cart.product);
   const isAuts = useAppSelector((state) => state.profil.isAuts);
@@ -42,8 +42,8 @@ export const ProductCard = (props: IProps) => {
   };
 
   return (
-    <ProductCardStyle key={props.value.id}>
-      <div className="product_page_favorites">
+    <ProductCardStyle >
+      <div className="product_page_favorites" >
         {idProductinFavorit.includes(props.value.id) ? (
           <img src={heartLike} alt="" onClick={() => del()} />
         ) : (

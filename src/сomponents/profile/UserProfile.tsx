@@ -133,7 +133,7 @@ export const UserProfile = () => {
                     onChange={(e) => setName(e.target.value)}
                   />
                 ) : (
-                  <input type="text" placeholder="" value={profils[0].name} />
+                  <input type="text" placeholder="" defaultValue={profils[0].name} />
                 )}
               </div>
             </div>
@@ -151,7 +151,7 @@ export const UserProfile = () => {
                     onChange={(e) => setEmail(e.target.value)}
                   />
                 ) : (
-                  <input type="text" placeholder="" value={profils[0].email} />
+                  <input type="text" placeholder="" defaultValue={profils[0].email} />
                 )}
               </div>
             </div>

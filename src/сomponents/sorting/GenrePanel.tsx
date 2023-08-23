@@ -17,7 +17,7 @@ interface IGenrePanel {
 export const GenrePanel = (props: IGenrePanel) => {
   const minPrice = useAppSelector((state) => state.sorting.sliderMin)
   const maxPrice = useAppSelector((state) => state.sorting.sliderMax)
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 

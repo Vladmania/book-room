@@ -146,7 +146,6 @@ class ProductControler {
         array = product
       )
       if(sort){
-        console.log(sort);
         if (sort === 'Price') {
           const sortProductPrice = array.sort(
             (a, b) => a.hardcover_price - b.hardcover_price
@@ -310,8 +309,6 @@ class ProductControler {
   }
   async searchQuery(req, res) {
     const { query } = req.body
-    let q = query
-    console.log(String(q))
     const changeProduct = await Product.findAll()
     const respons = changeProduct.filter((item) =>
       item.name.toLowerCase().includes(query.toLowerCase())

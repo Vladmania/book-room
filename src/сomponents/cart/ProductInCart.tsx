@@ -44,7 +44,7 @@ export const ProductInCart = (props: IProductInCart) => {
           >
             -
           </p>
-          <input type="number" value={props.quantity} />
+          <div className="ProductInCart_quantity">{props.quantity}</div>
           <p
             onClick={() =>
               dispatch(

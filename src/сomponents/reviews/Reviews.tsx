@@ -25,6 +25,7 @@ export const Reviews = (props: IReviews) => {
       name={event.name}
       avatar={event.avatar}
       feedback={event.feedback}
+      key={event.id}
     />
   ));
 

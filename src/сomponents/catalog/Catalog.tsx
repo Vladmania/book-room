@@ -1,4 +1,4 @@
-import { ProductCard } from './product card/ProductCard'
+import { ProductCards } from './product card/ProductCard'
 import { useAppSelector } from '../../store/Store'
 import { CatalogStyle, CatalogFlipStyle } from './Catalog.styles'
 import { thankGetProduct } from '../../store/Slice/ProductSlice'
@@ -6,8 +6,7 @@ import { useAppDispatch } from '../../store/Store'
 import { useEffect, useState } from 'react'
 import forward from '../../pablic/Forward.svg'
 import back from '../../pablic/Back.svg'
-import { useNavigate, useSearchParams } from "react-router-dom";
-
+import { useSearchParams } from "react-router-dom";
 
 export const Catalog = () => {
   const [whatPage, setWhatPage]= useState(Number)
@@ -23,6 +22,7 @@ export const Catalog = () => {
   )
   const dispatch = useAppDispatch()
   const [searchParams] = useSearchParams();
+
 
   useEffect(() => {
     dispatch(thankGetProduct({
@@ -40,11 +40,11 @@ export const Catalog = () => {
     page.push(i)
   }
 
-  const homePageCatalog = product.map((e) => <ProductCard value={e} />)
+  const homePageCatalog = product.map((e) => <ProductCards value={e} key={e.id}/>)
 
   return (
     <>
-    <CatalogFlipStyle>
+    <CatalogFlipStyle >
         {currentPage !== 0 ? (
           <img
             src={back}
@@ -56,7 +56,7 @@ export const Catalog = () => {
           <img src={back} alt="" className="catalog_flip_back" />
         )}
         {page.map((p) => (
-          <span
+          <span key={p}
             className={currentPage === p ? 'namberSize' : 'allSize'}
             onClick={() => setWhatPage(p)}
           ></span>
@@ -72,14 +72,13 @@ export const Catalog = () => {
           />
         )}
       </CatalogFlipStyle>
-      <CatalogStyle>
+      <CatalogStyle >
         {loading ? (
           <h2>Loading...</h2>
         ) : error ? (
           <h1>Явно где-то косяк</h1>
         ) : homePageCatalog}
       </CatalogStyle>
-      
     </>
   )
 }

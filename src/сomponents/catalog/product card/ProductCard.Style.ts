@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const ProductCardStyle = styled.div`
+export const ProductCardStyle = styled.li`
   font-family: 'Poppins';
   font-style: normal;
   font-weight: 500;
@@ -8,6 +8,17 @@ export const ProductCardStyle = styled.div`
   line-height: 24px;
   grid-column-start: span 3;
   width: 100%;
+  opacity: 0;
+  animation: show 1s 1;
+  animation-fill-mode: forwards;
+  @keyframes show {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
   .product_card_cover {
     height: 60%;
   }

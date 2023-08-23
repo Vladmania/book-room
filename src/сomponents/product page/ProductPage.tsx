@@ -50,7 +50,7 @@ export const ProductPage = (props: IProps) => {
 
   useEffect(() => {
     dispatch(thankgetReviews(Number(param.productId)));
-  }, [dispatch]);
+  }, [dispatch, param.productId]);
 
   const del = () => {
     dispatch(thankDeleteProductFavorites(props.value.id));
@@ -76,8 +76,7 @@ export const ProductPage = (props: IProps) => {
 
   return (
     <>
-      {" "}
-      <ProductPageStyle>
+      <ProductPageStyle key={props.value.id}>
         <div className="product_page_cover">
           <img
             src={props.value.cover}

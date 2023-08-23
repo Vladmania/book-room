@@ -8,7 +8,6 @@ import { openModal } from "../../store/Slice/ProfilSlice";
 import { thankShoppingProduct, modalSuccessfulPurchase } from "../../store/Slice/CartSlice";
 import { Navigate } from "react-router-dom";
 import { Portal } from '../portal/Portal'
-import { useState} from 'react'
 
 export const Cart = () => {
   const dispatch = useAppDispatch();
@@ -23,6 +22,7 @@ export const Cart = () => {
   }
   const addProductInCart = productsInCart.map((e) => (
     <ProductInCart
+      key={e.id}
       id={e.id}
       name={e.name}
       autor={e.autor}

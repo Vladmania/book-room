@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '../../store/Store'
 import {openModal} from '../../store/Slice/ProfilSlice'
 import { thanksearchQuery } from '../../store/Slice/ProductSlice'
 
-export const Header: React.FC = () => {
+export const Header = () => {
   const isAuts = useAppSelector((state) => state.profil.isAuts)
   const flagModal = useAppSelector((state) => state.profil.modal)
   const prod = useAppSelector(state => state.cart.product)
@@ -26,7 +26,7 @@ export const Header: React.FC = () => {
       <h3>Catalog</h3>
         <div className="header_poisk">
           <img src={search} alt="search" />
-          <input placeholder="Search" onChange={event => dispatch(thanksearchQuery(event.target.value))}/>
+          <input placeholder="Search" id="Search" name="Search" onChange={event =>dispatch(thanksearchQuery(event.target.value))}/>
       </div>
       {isAuts ? (
         <div className="header_button_collection">
@@ -60,7 +60,7 @@ export const Header: React.FC = () => {
     </StyleHeader>
     <StyleHeaderPoisk className="header_poisk_mobail">
     <img src={search} alt="search" />
-    <input placeholder="Search" onChange={event => dispatch(thanksearchQuery(event.target.value))}/>
+    <input placeholder="Search" id="Search_mobail" name="Search_mobail" onChange={event => dispatch(thanksearchQuery(event.target.value))}/>
   </StyleHeaderPoisk></>
   )
 }

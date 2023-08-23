@@ -11,10 +11,10 @@ export const PagesProducts = () => {
 
   useEffect(() => {
     dispatch(thankgetOneProduct(Number(param.productId)))
-  }, [dispatch])
+  }, [dispatch, param.productId])
 
   const addproduct = product.map((e) =>
-    e.id === Number(param.productId) ? <ProductPage value={e} /> : null
+    e.id === Number(param.productId) ? <ProductPage value={e} key={e.id}/> : null
   )
 
   return <>{addproduct}</>
