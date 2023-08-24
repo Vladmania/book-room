@@ -10,29 +10,6 @@ import { Navigate } from "react-router-dom";
 import { Portal } from '../portal/Portal'
 
 export const Cart = () => {
-  const dispatch = useAppDispatch();
-  const isAuts = useAppSelector((state) => state.profil.isAuts);
-  const productsInCart = useAppSelector((state) => state.cart.product);
-  const SuccessfulPurchase = useAppSelector((state) => state.cart.successfulPurchase);
-
-
-  if (!isAuts) {
-    dispatch(openModal(true));
-    return <Navigate to="/"></Navigate>;
-  }
-  const addProductInCart = productsInCart.map((e) => (
-    <ProductInCart
-      key={e.id}
-      id={e.id}
-      name={e.name}
-      autor={e.autor}
-      cover={e.cover}
-      price={e.price}
-      quantity={e.quantity}
-    />
-  ));
-  const totalCost = productsInCart.map((e) => e.price * e.quantity);
-  const sum = productsInCart.length !== 0 ? totalCost.reduce((a, b) => a + b) : 0;
 
   return (
     <>
