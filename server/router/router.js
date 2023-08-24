@@ -32,7 +32,6 @@ router.delete('/delete/:id', CartController.removeProductFromCart)
 router.put('/editcart', CartController.changeTheQuantityInTheCart)
 router.delete('/shopping', CartController.shoppingProduct)
 
-router.post('/sortproduct', ProductControler.sortProduct)
 router.post('/search', ProductControler.searchQuery)
 
 router.post('/addreviews', ReviewsController.addReviews)
