@@ -15,7 +15,6 @@ export const Cart = () => {
   const productsInCart = useAppSelector((state) => state.cart.product);
   const SuccessfulPurchase = useAppSelector((state) => state.cart.successfulPurchase);
 
-
   if (!isAuts) {
     dispatch(openModal(true));
     return <Navigate to="/"></Navigate>;
