@@ -30,10 +30,8 @@ router.post('/addcart', CartController.addProductInBacket)
 router.post('/getcart', MiddlewareVerify.verifyToken,CartController.getCart)
 router.delete('/delete/:id', CartController.removeProductFromCart)
 router.put('/editcart', CartController.changeTheQuantityInTheCart)
+router.delete('/shopping', CartController.shoppingProduct)
 
-router.post('/sortgenre', ProductControler.sortGenr)
-router.post('/sortprice', ProductControler.sortPrice)
-router.post('/sortproduct', ProductControler.sortProduct)
 router.post('/search', ProductControler.searchQuery)
 
 router.post('/addreviews', ReviewsController.addReviews)

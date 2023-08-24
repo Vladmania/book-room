@@ -36,7 +36,8 @@ const ProductInCart = ConnectSequelize.define('ProductfromCarts', {
 
 class CartController {
   async addProductInBacket(req, res) {
-    const { userId, productId, name, autor, cover, price, quantity } = req.body
+    try{
+      const { userId, productId, name, autor, cover, price, quantity } = req.body
     await ProductInCart.create({
         userId,
         productId,
@@ -52,6 +53,10 @@ class CartController {
         }
     })
     res.json(cartUser)
+    }catch(e){
+      console.log(e);
+    }
+    
   }
   async getCart(req, res){
   try{
@@ -68,17 +73,29 @@ class CartController {
     
   }
   async removeProductFromCart(req, res){
-    const id = req.params.id
+    try{
+      const id = req.params.id
     const remoteProduct = await ProductInCart.destroy({
       where: {
         id
       }
   })
-  
   res.json(remoteProduct)
+    }catch(e){
+      console.log(e);
+    }
+  }
+  async shoppingProduct(req, res){
+    try{
+      const shoppingProductFromCart = await ProductInCart.truncate();
+      res.json(shoppingProductFromCart)
+    }catch(e){
+      console.log(e);
+    }
   }
   async changeTheQuantityInTheCart(req, res){
-    const {id, quantity} = req.body
+    try{
+      const {id, quantity} = req.body
     const changeProduct = await ProductInCart.findOne({
       where: {
         id
@@ -87,6 +104,9 @@ class CartController {
   changeProduct.quantity = quantity
   await changeProduct.save()
   res.json(changeProduct)
+    }catch(e){
+      console.log(e);
+    }
   }
 }
 

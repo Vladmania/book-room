@@ -9,7 +9,7 @@ interface IProps {
 
 export const ReviewsText = (props: IProps) => {
   return (
-    <StyleReviewText>
+    <StyleReviewText >
       <div className="review_avatar_in_nickname">
         <img
           src={

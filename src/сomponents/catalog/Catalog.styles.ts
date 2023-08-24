@@ -5,6 +5,7 @@ export const CatalogStyle = styled.div`
   grid-template-columns: repeat(12, 2fr);
   grid-column-gap: 20px;
   margin: 0 5%;
+  list-style-type: none;
   @media (max-width: 945px) {
     margin: 0 2%;
   }

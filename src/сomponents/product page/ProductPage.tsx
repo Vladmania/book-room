@@ -1,21 +1,21 @@
-import { ProductPageStyle } from './ProductPage.style'
-import heart from '../../pablic/Union.svg'
-import star from '../../pablic/Star.svg'
-import pointer from '../../pablic/Back Arrow.svg'
-import { Reviews } from '../reviews/Reviews'
-import { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../store/Store'
-import { thankgetReviews } from '../../store/Slice/ReviewsSlice'
-import { thankaddInCart } from '../../store/Slice/CartSlice'
-import { BannerAuthorizeNow } from '../banner/BannerAuthorizeNow'
-import { Recommendations } from '../recommendations/Recommendations'
+import { ProductPageStyle } from "./ProductPage.style";
+import heart from "../../pablic/Union.svg";
+import star from "../../pablic/Star.svg";
+import pointer from "../../pablic/Back Arrow.svg";
+import { Reviews } from "../reviews/Reviews";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/Store";
+import { thankgetReviews } from "../../store/Slice/ReviewsSlice";
+import { thankaddInCart } from "../../store/Slice/CartSlice";
+import { openModal } from "../../store/Slice/ProfilSlice";
+import { BannerAuthorizeNow } from "../banner/BannerAuthorizeNow";
 import {
   thankDeleteProductFavorites,
   deleteProduct,
   thankaddInFavorites,
-} from '../../store/Slice/FavoriteSlice'
-import heartLike from '../../pablic/Heart (1).svg'
-import { useParams } from 'react-router-dom'
+} from "../../store/Slice/FavoriteSlice";
+import heartLike from "../../pablic/Heart (1).svg";
+import { useParams } from "react-router-dom";
 
 interface IProductPage {
   id: number;
@@ -32,35 +32,51 @@ interface IProps {
 }
 
 export const ProductPage = (props: IProps) => {
-  const [grade, setGrade] = useState(Number)
-  const rating = useAppSelector((state) => state.review.review)
-  const isAuts = useAppSelector((state) => state.profil.isAuts)
-  const user = useAppSelector((state) => state.profil.profil)
-  const favorit = useAppSelector((state) => state.favorit.favorit)
-  const idProductinFavorit = favorit.map((e) => e.productId)
-  const dispatch = useAppDispatch()
-  let param = useParams()
+  const [grade, setGrade] = useState(Number);
+  const rating = useAppSelector((state) => state.review.review);
+  const isAuts = useAppSelector((state) => state.profil.isAuts);
+  const user = useAppSelector((state) => state.profil.profil);
+  const favorit = useAppSelector((state) => state.favorit.favorit);
+  const idProductinFavorit = favorit.map((e) => e.productId);
+  const dispatch = useAppDispatch();
+  let param = useParams();
 
   const overallRating = rating.filter((event) =>
     event.rating ? event.rating : null
-  )
-  const arrayRating = overallRating.map((e) => (e.rating ? e.rating : 0))
+  );
+  const arrayRating = overallRating.map((e) => (e.rating ? e.rating : 0));
   const sum =
-    arrayRating.reduce((acc, num) => acc + num, 0) / arrayRating.length
+    arrayRating.reduce((acc, num) => acc + num, 0) / arrayRating.length;
 
   useEffect(() => {
-    dispatch(thankgetReviews(Number(param.productId)))
-  }, [dispatch])
+    dispatch(thankgetReviews(Number(param.productId)));
+  }, [dispatch, param.productId]);
 
   const del = () => {
-    dispatch(thankDeleteProductFavorites(props.value.id))
-    dispatch(deleteProduct(props.value.id))
-  }
+    dispatch(thankDeleteProductFavorites(props.value.id));
+    dispatch(deleteProduct(props.value.id));
+  };
+
+  const addInCart = () => {
+    dispatch(
+      thankaddInCart({
+        userId: user[0].id,
+        productId: props.value.id,
+        name: props.value.name,
+        autor: props.value.autor,
+        cover: props.value.cover,
+        price:
+          Number(props.value.hardcover_price) === 0
+            ? props.value.paperback_price
+            : props.value.hardcover_price,
+        quantity: 1,
+      })
+    );
+  };
 
   return (
     <>
-      {' '}
-      <ProductPageStyle>
+      <ProductPageStyle key={props.value.id}>
         <div className="product_page_cover">
           <img
             src={props.value.cover}
@@ -75,19 +91,21 @@ export const ProductPage = (props: IProps) => {
                 src={heart}
                 alt=""
                 onClick={() =>
-                  dispatch(
-                    thankaddInFavorites({
-                      userId: user[0].id,
-                      productId: props.value.id,
-                      name: props.value.name,
-                      autor: props.value.autor,
-                      cover: props.value.cover,
-                      price:
-                        Number(props.value.hardcover_price) === 0
-                          ? props.value.paperback_price
-                          : props.value.hardcover_price,
-                    })
-                  )
+                  !isAuts
+                    ? dispatch(openModal(true))
+                    : dispatch(
+                        thankaddInFavorites({
+                          userId: user[0].id,
+                          productId: props.value.id,
+                          name: props.value.name,
+                          autor: props.value.autor,
+                          cover: props.value.cover,
+                          price:
+                            Number(props.value.hardcover_price) === 0
+                              ? props.value.paperback_price
+                              : props.value.hardcover_price,
+                        })
+                      )
                 }
               />
             )}
@@ -168,25 +186,10 @@ export const ProductPage = (props: IProps) => {
                   <div
                     className={
                       Number(props.value.paperback_price) === 0
-                        ? 'product_page_paperback'
-                        : 'product_page_hardcover'
+                        ? "product_page_paperback"
+                        : "product_page_hardcover"
                     }
-                    onClick={() =>
-                      dispatch(
-                        thankaddInCart({
-                          userId: user[0].id,
-                          productId: props.value.id,
-                          name: props.value.name,
-                          autor: props.value.autor,
-                          cover: props.value.cover,
-                          price:
-                            Number(props.value.hardcover_price) === 0
-                              ? props.value.paperback_price
-                              : props.value.hardcover_price,
-                          quantity: 1,
-                        })
-                      )
-                    }
+                    onClick={() => addInCart()}
                   >
                     $ {props.value.paperback_price} USD
                   </div>
@@ -197,28 +200,13 @@ export const ProductPage = (props: IProps) => {
                 <div
                   className={
                     Number(props.value.hardcover_price) === 0
-                      ? 'product_page_paperback'
-                      : 'product_page_hardcover'
+                      ? "product_page_paperback"
+                      : "product_page_hardcover"
                   }
-                  onClick={() =>
-                    dispatch(
-                      thankaddInCart({
-                        userId: user[0].id,
-                        productId: props.value.id,
-                        name: props.value.name,
-                        autor: props.value.autor,
-                        cover: props.value.cover,
-                        price:
-                          Number(props.value.hardcover_price) === 0
-                            ? props.value.paperback_price
-                            : props.value.hardcover_price,
-                        quantity: 1,
-                      })
-                    )
-                  }
+                  onClick={() => addInCart()}
                 >
                   {Number(props.value.hardcover_price) === 0
-                    ? 'Not available'
+                    ? "Not available"
                     : `$ ${props.value.hardcover_price} USD`}
                 </div>
               </div>
@@ -239,25 +227,10 @@ export const ProductPage = (props: IProps) => {
                 <div
                   className={
                     Number(props.value.paperback_price) === 0
-                      ? 'product_page_paperback'
-                      : 'product_page_hardcover'
+                      ? "product_page_paperback"
+                      : "product_page_hardcover"
                   }
-                  onClick={() =>
-                    dispatch(
-                      thankaddInCart({
-                        userId: user[0].id,
-                        productId: props.value.id,
-                        name: props.value.name,
-                        autor: props.value.autor,
-                        cover: props.value.cover,
-                        price:
-                          Number(props.value.hardcover_price) === 0
-                            ? props.value.paperback_price
-                            : props.value.hardcover_price,
-                        quantity: 1,
-                      })
-                    )
-                  }
+                  onClick={() => addInCart()}
                 >
                   $ {props.value.paperback_price} USD
                 </div>
@@ -268,28 +241,13 @@ export const ProductPage = (props: IProps) => {
               <div
                 className={
                   Number(props.value.hardcover_price) === 0
-                    ? 'product_page_paperback'
-                    : 'product_page_hardcover'
+                    ? "product_page_paperback"
+                    : "product_page_hardcover"
                 }
-                onClick={() =>
-                  dispatch(
-                    thankaddInCart({
-                      userId: user[0].id,
-                      productId: props.value.id,
-                      name: props.value.name,
-                      autor: props.value.autor,
-                      cover: props.value.cover,
-                      price:
-                        Number(props.value.hardcover_price) === 0
-                          ? props.value.paperback_price
-                          : props.value.hardcover_price,
-                      quantity: 1,
-                    })
-                  )
-                }
+                onClick={() => addInCart()}
               >
                 {Number(props.value.hardcover_price) === 0
-                  ? 'Not available'
+                  ? "Not available"
                   : `$ ${props.value.hardcover_price} USD`}
               </div>
             </div>
@@ -298,7 +256,6 @@ export const ProductPage = (props: IProps) => {
       </ProductPageStyle>
       <Reviews rating={grade} sum={sum} />
       {isAuts ? null : <BannerAuthorizeNow />}
-      <Recommendations />
     </>
-  )
-}
+  );
+};

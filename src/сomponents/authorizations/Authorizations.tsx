@@ -1,46 +1,46 @@
-import { AuthorizationsStyle } from './Authorizations.style'
-import people1 from '../../pablic/чел 1.png'
-import mail from '../../pablic/Mail.svg'
-import hide from '../../pablic/Hide.svg'
-import close from '../../pablic/Close.png'
-import { useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../store/Store'
+import { AuthorizationsStyle } from "./Authorizations.style";
+import people1 from "../../pablic/чел 1.png";
+import mail from "../../pablic/Mail.svg";
+import hide from "../../pablic/Hide.svg";
+import close from "../../pablic/Close.png";
+import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/Store";
 import {
   thankPostRegistrtion,
   thankPostLogin,
   openModal,
-} from '../../store/Slice/ProfilSlice'
+} from "../../store/Slice/ProfilSlice";
 
 export const Authorizations = () => {
-  const [entrance, setEntrance] = useState(false)
-  const [visibilityPassword, setVisibilityPassword] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordReplay, setPasswordReplay] = useState('')
-  const dispatch = useAppDispatch()
-  const errorMessage = useAppSelector((state) => state.profil.message)
+  const [entrance, setEntrance] = useState(false);
+  const [visibilityPassword, setVisibilityPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [passwordReplay, setPasswordReplay] = useState("");
+  const dispatch = useAppDispatch();
+  const errorMessage = useAppSelector((state) => state.profil.message);
 
   const comparisonPassword = () => {
     if (passwordReplay === password) {
       const arg = {
         email,
         password,
-      }
-      dispatch(thankPostRegistrtion(arg))
-    } 
-  }
+      };
+      dispatch(thankPostRegistrtion(arg));
+    }
+  };
 
   const showPassword = () => {
     if (visibilityPassword === false) {
-      setVisibilityPassword(true)
+      setVisibilityPassword(true);
     } else {
-      setVisibilityPassword(false)
+      setVisibilityPassword(false);
     }
-  }
+  };
 
   const login = () => {
-    dispatch(thankPostLogin({ email, password }))
-  }
+    dispatch(thankPostLogin({ email, password }));
+  };
 
   return (
     <AuthorizationsStyle>
@@ -48,13 +48,13 @@ export const Authorizations = () => {
         <div className="authorizations">
           <div className="authorizations_login_singup">
             <div
-              className={entrance ? '' : 'authorizations_active'}
+              className={entrance ? "" : "authorizations_active"}
               onClick={() => setEntrance(false)}
             >
               Log In
             </div>
             <div
-              className={entrance ? 'authorizations_active' : ''}
+              className={entrance ? "authorizations_active" : ""}
               onClick={() => setEntrance(true)}
             >
               /Sign Up
@@ -75,10 +75,10 @@ export const Authorizations = () => {
           <div className="authorizations_field">
             <img src={hide} alt="" onClick={() => showPassword()} />
             <input
-              type={visibilityPassword ? 'text' : 'password'}
+              type={visibilityPassword ? "text" : "password"}
               placeholder="Password"
               onChange={(e) => {
-                setPassword(e.target.value)
+                setPassword(e.target.value);
               }}
             />
           </div>
@@ -88,10 +88,10 @@ export const Authorizations = () => {
               <div className="authorizations_field">
                 <img src={hide} alt="" onClick={() => showPassword()} />
                 <input
-                  type={visibilityPassword ? 'text' : 'password'}
+                  type={visibilityPassword ? "text" : "password"}
                   placeholder="Password replay"
                   onChange={(e) => {
-                    setPasswordReplay(e.target.value)
+                    setPasswordReplay(e.target.value);
                   }}
                 />
               </div>
@@ -120,5 +120,5 @@ export const Authorizations = () => {
         />
       </div>
     </AuthorizationsStyle>
-  )
-}
+  );
+};

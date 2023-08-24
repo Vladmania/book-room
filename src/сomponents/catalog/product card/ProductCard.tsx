@@ -1,13 +1,18 @@
-import { ProductCardStyle } from './ProductCard.Style'
-import star from '../../../pablic/Starno.svg'
-import { Link } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../../store/Store'
-import { thankaddInCart } from '../../../store/Slice/CartSlice'
-import { thankDeleteProductFavorites, deleteProduct } from "../../../store/Slice/FavoriteSlice"
-import { thankaddInFavorites } from '../../../store/Slice/FavoriteSlice'
-import heart from '../../../pablic/Union.svg'
-import heartLike from '../../../pablic/Heart (1).svg'
-import starLike from '../../../pablic/Star.svg'
+import { ProductCardStyle } from "./ProductCard.Style";
+import star from "../../../pablic/Starno.svg";
+import { Link } from "react-router-dom";
+import { useAppDispatch, useAppSelector } from "../../../store/Store";
+import { thankaddInCart } from "../../../store/Slice/CartSlice";
+import {
+  thankDeleteProductFavorites,
+  deleteProduct,
+  thankaddInFavorites,
+} from "../../../store/Slice/FavoriteSlice";
+import { thankgetOneProduct } from "../../../store/Slice/ProductSlice";
+import { openModal } from "../../../store/Slice/ProfilSlice";
+import heart from "../../../pablic/Union.svg";
+import heartLike from "../../../pablic/Heart (1).svg";
+import starLike from "../../../pablic/Star.svg";
 
 interface ProductCard {
   id: number;
@@ -22,49 +27,56 @@ interface IProps {
   value: ProductCard;
 }
 
-export const ProductCard = (props: IProps) => {
-  const user = useAppSelector((state) => state.profil.profil)
-  const cart = useAppSelector((state) => state.cart.product)
-  const favorit = useAppSelector((state) => state.favorit.favorit)
-  const idProductinCart = cart.map((e) => e.productId)
-  const idProductinFavorit = favorit.map((e) => e.productId)
-  const dispatch = useAppDispatch()
+export const ProductCards = (props: IProps) => {
+  const user = useAppSelector((state) => state.profil.profil);
+  const cart = useAppSelector((state) => state.cart.product);
+  const isAuts = useAppSelector((state) => state.profil.isAuts);
+  const favorit = useAppSelector((state) => state.favorit.favorit);
+  const idProductinCart = cart.map((e) => e.productId);
+  const idProductinFavorit = favorit.map((e) => e.productId);
+  const dispatch = useAppDispatch();
 
-  const del = () =>{
-    dispatch(thankDeleteProductFavorites(props.value.id))
-    dispatch(deleteProduct(props.value.id))
-}
+  const del = () => {
+    dispatch(thankDeleteProductFavorites(props.value.id));
+    dispatch(deleteProduct(props.value.id));
+  };
 
   return (
-    <ProductCardStyle key={props.value.id}>
-      <div
-        className="product_page_favorites"
-      >{idProductinFavorit.includes(props.value.id) ?<img
-        src={heartLike}
-        alt=""
-        onClick={()=> del()}
-      />: <img
-      src={heart}
-      alt=""
-      onClick={() => dispatch(
-        thankaddInFavorites({
-          userId: user[0].id,
-          productId: props.value.id,
-          name: props.value.name,
-          autor: props.value.autor,
-          cover: props.value.cover,
-          price:
-            Number(props.value.hardcover_price) === 0
-              ? props.value.paperback_price
-              : props.value.hardcover_price,
-        })
-      )
-    }
-    />}
+    <ProductCardStyle >
+      <div className="product_page_favorites" >
+        {idProductinFavorit.includes(props.value.id) ? (
+          <img src={heartLike} alt="" onClick={() => del()} />
+        ) : (
+          <img
+            src={heart}
+            alt=""
+            onClick={() =>
+              !isAuts
+                ? dispatch(openModal(true))
+                : dispatch(
+                    thankaddInFavorites({
+                      userId: user[0].id,
+                      productId: props.value.id,
+                      name: props.value.name,
+                      autor: props.value.autor,
+                      cover: props.value.cover,
+                      price:
+                        Number(props.value.hardcover_price) === 0
+                          ? props.value.paperback_price
+                          : props.value.hardcover_price,
+                    })
+                  )
+            }
+          />
+        )}
       </div>
       <div className="product_card_cover">
-        <Link to={'/product/' + props.value.id}>
-          <img src={props.value.cover} alt="" />
+        <Link to={"/product/" + props.value.id}>
+          <img
+            src={props.value.cover}
+            alt=""
+            onClick={() => dispatch(thankgetOneProduct(props.value.id))}
+          />
         </Link>
       </div>
       <p className="product_card_name">{props.value.name}</p>
@@ -103,29 +115,31 @@ export const ProductCard = (props: IProps) => {
         <div
           className="product_card_price"
           onClick={() =>
-            dispatch(
-              thankaddInCart({
-                userId: user[0].id,
-                productId: props.value.id,
-                name: props.value.name,
-                autor: props.value.autor,
-                cover: props.value.cover,
-                price:
-                  Number(props.value.hardcover_price) === 0
-                    ? props.value.paperback_price
-                    : props.value.hardcover_price,
-                quantity: 1,
-              })
-            )
+            isAuts
+              ? dispatch(
+                  thankaddInCart({
+                    userId: user[0].id,
+                    productId: props.value.id,
+                    name: props.value.name,
+                    autor: props.value.autor,
+                    cover: props.value.cover,
+                    price:
+                      Number(props.value.hardcover_price) === 0
+                        ? props.value.paperback_price
+                        : props.value.hardcover_price,
+                    quantity: 1,
+                  })
+                )
+              : dispatch(openModal(true))
           }
         >
           $
           {Number(props.value.hardcover_price) === 0
             ? props.value.paperback_price
-            : props.value.hardcover_price}{' '}
+            : props.value.hardcover_price}{" "}
           USD
         </div>
       )}
     </ProductCardStyle>
-  )
-}
+  );
+};

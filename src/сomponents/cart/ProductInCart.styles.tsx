@@ -36,7 +36,7 @@ export const ProductInCartStyle = styled.div`
             justify-content: center;
             cursor: pointer;
         }
-        .ProductInCart_quantity_and_removal input{
+        .ProductInCart_quantity_and_removal div{
             width: 8%;
             text-align: center;
             border: none;

@@ -1,103 +1,82 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import { sortProductGenre} from '../../api/ServerRequests'
-import {ProductCard} from './ProductSlice'
+import { createSlice } from "@reduxjs/toolkit";
 
-interface IGenre{
-    switch: boolean
-    genre: string
+interface IGenre {
+  id: number;
+  switch: boolean;
+  genre: string;
 }
 
-interface ISortProduct{
-  genre: string,
-  currentPage: number
-}
-
-interface IInitialState{
-    genres: IGenre[],
-    sort:ProductCard[],
-    sliderMin: number,
-    sliderMax: number,
-    sorted: boolean,
-    loading: boolean,
-    error: boolean
-
+interface IInitialState {
+  genres: IGenre[];
+  onGenre: string;
+  sliderMin: number;
+  sliderMax: number;
+  sorted: boolean;
+  loading: boolean;
+  error: boolean;
 }
 
 const initialState: IInitialState = {
   genres: [
-    {switch: false, genre: 'Non-fiction'},
-    {switch: false, genre: 'Business & finance'},
-    {switch: false, genre: 'Politics'},
-    {switch: false, genre: 'Travel books'},
-    {switch: false, genre: 'Romance'},
-    {switch: false, genre: 'Satire'},
-    {switch: false, genre: 'Horror'},
-    {switch: false, genre: 'Children’s books'},
-    {switch: false, genre: "Fantasy"},
+    {id: 1, switch: false, genre: "Non-fiction" },
+    {id: 2, switch: false, genre: `Business and finance` },
+    {id: 3, switch: false, genre: "Politics" },
+    {id: 4,switch: false, genre: "Travel books" },
+    {id: 5, switch: false, genre: "Romance" },
+    {id: 6, switch: false, genre: "Satire" },
+    {id: 7, switch: false, genre: "Horror" },
+    {id: 8, switch: false, genre: "Children’s books" },
+    {id: 9, switch: false, genre: "Fantasy" },
   ],
-  sort: [],
+  onGenre: "",
   sliderMin: 0,
   sliderMax: 0,
   sorted: false,
   loading: false,
-  error: false
-}
+  error: false,
+};
 
 export const sortingSlice = createSlice({
-    
-  name: 'sorting',
+  name: "sorting",
   initialState,
   reducers: {
     SwitchSortGanreOn: (state, action) => ({
-        ...state,
-        genres: state.genres.map(e =>{ if(e.genre === action.payload){
-            return {...e, switch: true}
-
-        }return e} ),
-        sorted: true,
+      ...state,
+      genres: state.genres.map((e) => {
+        if (e.genre === action.payload) {
+          return { ...e, switch: true };
+        }
+        if (e.genre !== action.payload) {
+          return { ...e, switch: false };
+        }
+        return e;
       }),
-      SwitchSortGanreOff: (state, action) => ({
-        ...state,
-        genres: state.genres.map(e =>{ if(e.genre === action.payload){
-            return {...e, switch: false}
-
-        }return e} ), 
-        sort: state.sort.filter(e => e.genre !== action.payload),
-        sorted: state.sort.length !== 0,
+      onGenre: action.payload,
+    }),
+    SwitchSortGanreOff: (state, action) => ({
+      ...state,
+      genres: state.genres.map((e) => {
+        if (e.genre === action.payload) {
+          return { ...e, switch: false };
+        }
+        return e;
       }),
-      minStateSlider: (state, action) => ({
-        ...state, sliderMin: action.payload  
-  }),
-},
-  extraReducers(builder){
-    builder.addCase(thankSortProductGanre.pending, (state) => {
-        state.loading = true
-      })
-      builder.addCase(thankSortProductGanre.fulfilled, (state, actions) => {  
-        state.sort = state.sort.concat(actions.payload)
-        state.loading = false
-      })
-      builder.addCase(thankSortProductGanre.rejected, (state) => {
-        state.error = true
-        state.loading = false
-      })
+      onGenre: "",
+    }),
+    minStateSlider: (state, action) => ({
+      ...state,
+      sliderMin: action.payload,
+    }),
+    maxStateSlider: (state, action) => ({
+      ...state,
+      sliderMax: action.payload,
+    }),
   },
-})
+});
 
-export const {SwitchSortGanreOn, SwitchSortGanreOff} = sortingSlice.actions
-
-export const thankSortProductGanre = createAsyncThunk<ProductCard[], ISortProduct >(
-    'sorting/thankSortProductGanre',
-    async ({genre, currentPage}) => {
-      try{
-        const respons = await sortProductGenre(genre , currentPage)
-        return respons.data
-      }catch(e){
-          console.log(e);
-      }
-    }
-  )
-
-
-  
+export const {
+  SwitchSortGanreOn,
+  SwitchSortGanreOff,
+  minStateSlider,
+  maxStateSlider,
+} = sortingSlice.actions;

@@ -29,7 +29,8 @@ const Reviews = ConnectSequelize.define('Feedbacks', {
 
 class ReviewsController {
   async addReviews(req, res){
-    const {prductId, name, avatar, feedback, rating} = req.body
+    try{
+      const {prductId, name, avatar, feedback, rating} = req.body
     await Reviews.create({
       prductId, 
       name, 
@@ -41,13 +42,20 @@ class ReviewsController {
       where: { prductId },
     })
     res.json(reviews)
+    }catch(e){
+      console.log(e);
+    }
   }
   async getReviews(req, res){
+   try{
     const prductId = req.params.idProduct
     const reviews = await Reviews.findAll({
       where: { prductId },
     })
     res.json(reviews)
+   }catch(e){
+    console.log(e);
+   }
   }
 }
 

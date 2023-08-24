@@ -55,6 +55,15 @@ export const ProductInCartStyle = styled.div`
     width: fit-content;
     cursor: pointer;
   }
+  .if_product_cart {
+    cursor: pointer;
+    border-radius: 16px;
+    display: flex;
+    justify-content: center;
+    padding: 10px 50px;
+    border-radius: 16px;
+    border: 1px solid var(--dark, #0d1821);
+  }
 
   input[type='number']::-webkit-outer-spin-button,
   input[type='number']::-webkit-inner-spin-button {

@@ -118,21 +118,26 @@ class UserController {
     }
   }
   async editorPhotoUser(req, res) {
-    if (req.file) {
-      const { id } = req.body
-      const photo = req.file.path
-      const userProfil = await User.findOne({
-        where: {
-          id,
-        },
-      })
-      userProfil.photo = photo
-      await userProfil.save()
-      res.json([userProfil])
+    try{
+      if (req.file) {
+        const { id } = req.body
+        const photo = req.file.path
+        const userProfil = await User.findOne({
+          where: {
+            id,
+          },
+        })
+        userProfil.photo = photo
+        await userProfil.save()
+        res.json([userProfil])
+      }
+    }catch(e){
+      console.log(e);
     }
   }
   async editorDataUser(req, res) {
-    const { name, email, token } = req.body
+    try{
+      const { name, email, token } = req.body
     const userProfil = await User.findOne({
       where: {
         id: token.userId,
@@ -142,6 +147,9 @@ class UserController {
     userProfil.email = email
     await userProfil.save()
     res.json([userProfil])
+    }catch(e){
+      console.log(e);
+    }
   }
   async editorPasswordUser(req, res) {
     try {

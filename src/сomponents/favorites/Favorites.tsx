@@ -14,6 +14,7 @@ export const Favorites = () => {
   }
   const addProductInFavorites = prod.map((e) => (
     <ProductInFavorites
+      key={e.id}
       id={e.id}
       productId={e.productId}
       name={e.name}
