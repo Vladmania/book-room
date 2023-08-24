@@ -11,6 +11,9 @@ import { Portal } from '../portal/Portal'
 
 export const Cart = () => {
 
+const profils = useAppSelector((state) => state.profil.profil);
+  const isAuts = useAppSelector((state) => state.profil.isAuts);
+
   return (
     <>
     {SuccessfulPurchase ? <Portal><PurchaseAlert /></Portal> : null}
