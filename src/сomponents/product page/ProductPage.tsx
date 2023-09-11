@@ -34,7 +34,7 @@ interface IProps {
 export const ProductPage = (props: IProps) => {
   const [grade, setGrade] = useState(Number);
   const rating = useAppSelector((state) => state.review.review);
-  const isAuts = useAppSelector((state) => state.profil.isAuts);
+  const isAuts = useAppSelector((state) => state.profil.isAuth);
   const user = useAppSelector((state) => state.profil.profil);
   const favorit = useAppSelector((state) => state.favorit.favorit);
   const idProductinFavorit = favorit.map((e) => e.productId);

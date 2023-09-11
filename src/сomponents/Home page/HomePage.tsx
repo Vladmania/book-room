@@ -6,7 +6,7 @@ import { useAppSelector } from '../../store/Store'
 import {HomePageStyle} from "./Homepage.Style"
 
 export const HomePage = () => {
-  const isAuts = useAppSelector(state => state.profil.isAuts)
+  const isAuts = useAppSelector(state => state.profil.isAuth)
   
   return (
     <HomePageStyle>

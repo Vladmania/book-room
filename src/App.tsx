@@ -1,3 +1,4 @@
+import { useEffect, useState} from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Header } from "./сomponents/header/Header";
 import { HomePage } from "./сomponents/Home page/HomePage";
@@ -9,21 +10,28 @@ import { PagesProducts } from "./сomponents/product page/PagesProducts";
 import { thankGetProductCart } from "./store/Slice/CartSlice";
 import { thankGetProductFavorites } from "./store/Slice/FavoriteSlice";
 import { useAppDispatch } from "./store/Store";
-import { useEffect } from "react";
 import { thankAuthorizationCheck } from "./store/Slice/ProfilSlice";
 
 function App(){
   const dispatch = useAppDispatch();
+  const [isAuth, setIsAuth] = useState(false);
   
   useEffect(() => {
+   const loadingData = async() =>{
     const toket = localStorage.getItem("token");
     if (toket) {
-      dispatch(thankAuthorizationCheck(toket));
-      dispatch(thankGetProductFavorites(toket));
-      dispatch(thankGetProductCart(toket));
+     await dispatch(thankAuthorizationCheck(toket));
+     await dispatch(thankGetProductFavorites(toket));
+     await dispatch(thankGetProductCart(toket));
+    setIsAuth(true)
     }
+   }
+   loadingData()
   }, [dispatch]);
 
+  if(!isAuth){
+    return <div>Загрузка</div>
+  }
   return (
     <BrowserRouter>
       <div className="App">

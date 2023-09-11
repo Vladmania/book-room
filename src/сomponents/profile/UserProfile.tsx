@@ -17,7 +17,7 @@ import { Navigate } from "react-router-dom";
 export const UserProfile = () => {
   const dispatch = useAppDispatch();
   const profils = useAppSelector((state) => state.profil.profil);
-  const isAuts = useAppSelector((state) => state.profil.isAuts);
+  const isAuts = useAppSelector((state) => state.profil.isAuth);
   const [changeInfo, setChangeInfo] = useState(Boolean);
   const [error, setError] = useState(Boolean);
   const [changePassword, setChangePassword] = useState(Boolean);

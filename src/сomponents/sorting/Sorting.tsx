@@ -37,7 +37,7 @@ export const Sorting = () => {
   useEffect(()=>{
     dispatch(SwitchSortGanreOn(searchParams.get("genre") ?? onGenre));
     dispatch(minStateSlider(searchParams.get("minprice") ?? minPrice))
-    dispatch(maxStateSlider(searchParams.get("maxprice") ?? maxPrice))  
+    dispatch(maxStateSlider(searchParams.get("maxprice") ?? pricemax))  
   }, [])
   
   const onCheng = (render: number[], handle: number, value: number[]) => {
@@ -64,8 +64,8 @@ export const Sorting = () => {
     dispatch(
     thankGetProduct({
       genre: onGenre,
-      minPrice: minPrice,
-      maxPrice: maxPrice,
+      minPrice,
+      maxPrice,
       currentPage,
       sort
     })

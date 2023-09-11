@@ -125,6 +125,7 @@ class ProductControler {
           });
           array = sortProd;
         } else {
+          console.log("ЭТО");
           const sortProd = await Product.findAll({
             where: {
               genre,

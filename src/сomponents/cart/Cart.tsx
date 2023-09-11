@@ -11,7 +11,7 @@ import { Portal } from '../portal/Portal'
 
 export const Cart = () => {
   const dispatch = useAppDispatch();
-  const isAuts = useAppSelector((state) => state.profil.isAuts);
+  const isAuts = useAppSelector((state) => state.profil.isAuth);
   const productsInCart = useAppSelector((state) => state.cart.product);
   const SuccessfulPurchase = useAppSelector((state) => state.cart.successfulPurchase);
 

@@ -6,7 +6,7 @@ import { ProductInFavorites } from './ProductInFavorites'
 import { Navigate } from 'react-router-dom'
 
 export const Favorites = () => {
-  const isAuts = useAppSelector((state) => state.profil.isAuts)
+  const isAuts = useAppSelector((state) => state.profil.isAuth)
   const prod = useAppSelector((state) => state.favorit.favorit)
 
   if (!isAuts) {

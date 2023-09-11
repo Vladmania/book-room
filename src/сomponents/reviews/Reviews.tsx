@@ -14,7 +14,7 @@ interface IReviews {
 export const Reviews = (props: IReviews) => {
   const dispatch = useAppDispatch();
   const profil = useAppSelector((state) => state.profil.profil);
-  const isAuts = useAppSelector((state) => state.profil.isAuts);
+  const isAuts = useAppSelector((state) => state.profil.isAuth);
   const reviews = useAppSelector((state) => state.review.review);
   const [valueTextarea, setValueTextarea] = useState("");
 

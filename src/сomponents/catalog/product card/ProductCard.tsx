@@ -30,22 +30,22 @@ interface IProps {
 export const ProductCards = (props: IProps) => {
   const user = useAppSelector((state) => state.profil.profil);
   const cart = useAppSelector((state) => state.cart.product);
-  const isAuts = useAppSelector((state) => state.profil.isAuts);
+  const isAuts = useAppSelector((state) => state.profil.isAuth);
   const favorit = useAppSelector((state) => state.favorit.favorit);
   const idProductinCart = cart.map((e) => e.productId);
   const idProductinFavorit = favorit.map((e) => e.productId);
   const dispatch = useAppDispatch();
 
-  const del = () => {
+  const removeProduct = () => {
     dispatch(thankDeleteProductFavorites(props.value.id));
     dispatch(deleteProduct(props.value.id));
   };
 
   return (
     <ProductCardStyle >
-      <div className="product_page_favorites" >
+      <div className="product-page-favorites" >
         {idProductinFavorit.includes(props.value.id) ? (
-          <img src={heartLike} alt="" onClick={() => del()} />
+          <img src={heartLike} alt="" onClick={() => removeProduct()} />
         ) : (
           <img
             src={heart}

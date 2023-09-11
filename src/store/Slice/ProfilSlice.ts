@@ -21,7 +21,7 @@ interface IUserProfil {
 
 interface IInitialState {
   profil: IUserProfil[];
-  isAuts: boolean;
+  isAuth: boolean;
   loading: boolean;
   error: boolean;
   modal: boolean;
@@ -35,7 +35,7 @@ interface IProps {
 
 const initialState: IInitialState = {
   profil: [],
-  isAuts: false,
+  isAuth: false,
   loading: false,
   error: false,
   modal: false,
@@ -64,7 +64,7 @@ export const profilSlice = createSlice({
     builder.addCase(thankAuthorizationCheck.fulfilled, (state, actions) => {
       state.profil = actions.payload
       state.loading = false
-      state.isAuts = true
+      state.isAuth = true
     })
     builder.addCase(thankAuthorizationCheck.rejected, (state) => {
       state.loading = false
@@ -77,7 +77,7 @@ export const profilSlice = createSlice({
       if (actions.payload !== undefined) {
         state.profil = actions.payload
         state.loading = false
-        state.isAuts = true
+        state.isAuth = true
         state.modal = false
       }
     })
@@ -93,7 +93,7 @@ export const profilSlice = createSlice({
       if (actions.payload !== undefined) {
         state.profil = actions.payload
         state.loading = false
-        state.isAuts = true
+        state.isAuth = true
         state.modal = false
       }
     })
@@ -182,14 +182,17 @@ export const thankPostLogin = createAsyncThunk<IUserProfil[], IProps>(
 
 export const thankAuthorizationCheck = createAsyncThunk<IUserProfil[], string>(
   'profil/thankAuthorizationCheck',
-  async (token) => {
+  async (token, {dispatch}) => {
     try {
       const response = await getCheck(token)
       if(response.data === 'token is not alive'){
         const newResponse = await refresh(token)
         localStorage.setItem('token', newResponse.data[0].token)
         return newResponse.data
-      }else{return response.data }
+      }else{
+        if(!response.data){
+
+        }else{return response.data} }
     } catch (e) {
       console.log(e)
     }

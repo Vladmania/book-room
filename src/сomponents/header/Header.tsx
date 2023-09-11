@@ -13,7 +13,7 @@ import { openModal } from "../../store/Slice/ProfilSlice";
 import { thanksearchQuery } from "../../store/Slice/ProductSlice";
 
 export const Header = () => {
-  const isAuts = useAppSelector((state) => state.profil.isAuts);
+  const isAuts = useAppSelector((state) => state.profil.isAuth);
   const flagModal = useAppSelector((state) => state.profil.modal);
   const prod = useAppSelector((state) => state.cart.product);
   const dispatch = useAppDispatch();
