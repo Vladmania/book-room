@@ -20,7 +20,6 @@ export const GenrePanel = (props: IGenrePanel) => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-console.log(maxPrice);
 
   return (
     <GenrePanelStyle>

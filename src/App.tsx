@@ -9,12 +9,12 @@ import { UserProfile } from "./сomponents/profile/UserProfile";
 import { PagesProducts } from "./сomponents/product page/PagesProducts";
 import { thankGetProductCart } from "./store/Slice/CartSlice";
 import { thankGetProductFavorites } from "./store/Slice/FavoriteSlice";
-import { useAppDispatch } from "./store/Store";
+import { useAppDispatch} from "./store/Store";
 import { thankAuthorizationCheck } from "./store/Slice/ProfilSlice";
 
 function App(){
   const dispatch = useAppDispatch();
-  const [isAuth, setIsAuth] = useState(false);
+  const [isRegistered, setIsAuth] = useState(false);
   
   useEffect(() => {
    const loadingData = async() =>{
@@ -29,9 +29,10 @@ function App(){
    loadingData()
   }, [dispatch]);
 
-  if(!isAuth){
+  if(!isRegistered){
     return <div>Загрузка</div>
   }
+
   return (
     <BrowserRouter>
       <div className="App">

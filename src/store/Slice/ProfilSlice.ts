@@ -182,7 +182,7 @@ export const thankPostLogin = createAsyncThunk<IUserProfil[], IProps>(
 
 export const thankAuthorizationCheck = createAsyncThunk<IUserProfil[], string>(
   'profil/thankAuthorizationCheck',
-  async (token, {dispatch}) => {
+  async (token) => {
     try {
       const response = await getCheck(token)
       if(response.data === 'token is not alive'){
